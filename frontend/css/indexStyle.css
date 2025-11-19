@@ -1,0 +1,33 @@
+/* Sliding Sidebar */
+#sidebar {
+    width: 0;
+    height: 100%;
+    background-color: lightgray;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    transition: 0.3s;
+    padding: 20px;
+}
+
+/* Top Bar Layout */
+.top-bar {
+    position: relative;
+    padding: 10px;
+}
+
+/* Hamburger Menu */
+.menu-icon {
+    cursor: pointer;
+}
+
+/* Center LOGO */
+.logo {
+    margin-left: 20px;
+}
+
+/* Login Button (Right aligned) */
+.login-btn {
+    float: right;
+}
