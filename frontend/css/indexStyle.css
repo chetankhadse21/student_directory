@@ -37,10 +37,20 @@
 }
 
 /* Open button */
-.open-btn {
-    font-size: 30px;
-    cursor: pointer;
-    padding: 10px;
+.menu-toggle {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background: #778873;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 2001;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  transition: background 0.3s;
 }
 
 /* Main content */
@@ -63,6 +73,7 @@
 .header .logo {
     font-size: 24px;
     font-weight: bold;
+    justify-content:center
 }
 
 /* Login button stays at the right */
@@ -80,7 +91,7 @@ body{
 
 /* Buttons container */
 div button {
-    background-color: #A1BC98; /* green background */
+    background-color: #96b18d; /* green background */
     color: white;              /* text color */
     padding: 10px 20px;        /* vertical and horizontal padding */
     margin: 5px;               /* spacing between buttons */
