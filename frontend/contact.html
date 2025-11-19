@@ -3,16 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/indexStyle.css">
     <title>Contact</title>
+       
 </head>
 <body>
 
-    <!-- Top Row -->
-    <div>
-        <span>☰</span>
-        <span style="margin-left: 20px;">LOGO</span>
-        <span style="float: right;">Login</span>
+    <div class="header">
+        <span class="logo">LOGO</span>
+        <span class="login">Login</span>
     </div>
+
+
+    <!-- Button to open sidebar -->
+    <button class="open-btn" onclick="openSidebar()">&#9776;</button>
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <a href="#" class="close-btn" onclick="closeSidebar()">×</a>
+        <a href="index.html">Home</a>
+        <a href="help.html">Help</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact us</a>
+    </div> 
 
     <hr>
 
@@ -37,6 +50,8 @@
 
         <button type="submit">Submit</button>
     </form>
+
+    <script src="js/indexScript.js"></script>
 
 </body>
 </html>

@@ -8,22 +8,26 @@
 </head>
 <body>
 
-    <!-- Button to open sidebar -->
-    <span class="open-btn" onclick="openSidebar()">&#9776;</span>
-
-    <!-- Sidebar -->
-    <div id="sidebar">
-        <a href="#" class="close-btn" onclick="closeSidebar()">×</a>
-        <a href="#">Home</a>
-        <a href="help.html">Help</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact us</a>
-    </div>
 
     <!-- Main Content / Header -->
     <div class="header">
         <span class="logo">LOGO</span>
-        <span class="login">Login</span>
+        <a href="login.html" class="login">Login</a>
+    
+
+
+    <!-- Button to open sidebar -->
+    <button class="menu-toggle" onclick="openSidebar()">&#9776;</button>
+
+    </div>
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <a href="#" class="close-btn" onclick="closeSidebar()">×</a>
+        <a href="index.html">Home</a>
+        <a href="help.html">Help</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact us</a>
     </div>
 
 
