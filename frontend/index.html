@@ -1,36 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Classroom App Landing</title>
-  </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom App</title>
+    <link rel="stylesheet" href="frontend/css/indexStyle.css">
+</head>
 
-  <body>
+<body>
 
-    <!-- Top Row -->
+    <!-- Sidebar (hidden initially) -->
+    <div id="sidebar" style="display:none;">
+        <a href="about.html">About</a><br><br>
+        <a href="contact.html">Contact</a><br><br>
+        <a href="help.html">Help</a><br><br>
+
+        <button onclick="closeSidebar()">Close</button>
+    </div>
+
+    <!-- Top Bar -->
     <div>
-      <span>☰</span>
-      <span style="margin-left: 20px;">LOGO</span>
-      <span style="float: right;">Login</span>
+        <!-- Menu Icon -->
+        <span onclick="openSidebar()">☰</span>
+
+        <!-- Logo -->
+        <span style="margin-left: 20px;">LOGO</span>
+
+        <!-- Login -->
+        <span style="float: right;">Login</span>
     </div>
 
     <hr>
 
     <!-- Section Button -->
-    <div>
-      <button>Section</button>
-    </div>
+    <button>Section</button>
 
-    <br><br> 
+    <br><br>
 
     <!-- Feature Buttons -->
-    <div>
-      <button>Books</button>
-      <button>Assignments</button>
-      <button>Notes</button>
-      <button>Attendance</button>
-    </div>
+    <button>Books</button>
+    <button>Assignments</button>
+    <button>Notes</button>
+    <button>Attendance</button>
 
-  </body>
-</html> 
+    <!-- Link external script -->
+    <script src="C:\Users\HP\OneDrive\Desktop\student_directory\student_directory\frontend\js\indexScript.js"></script>
+
+</body>
+</html>
