@@ -2,7 +2,7 @@
 #sidebar {
     width: 250px;
     height: 100vh;
-    background: #111;
+    background: #778873;
     padding-top: 60px;
     position: fixed;
     top: 0;
@@ -47,4 +47,52 @@
 .content {
     margin-left: 20px;
     padding: 20px;
+}
+
+
+.header {
+    display: flex;
+    justify-content: center; /* centers the logo horizontally */
+    align-items: center;     /* vertical alignment */
+    position: relative;      /* for positioning login to right */
+    padding: 10px 0;
+    background-color: #A1BC98; /* optional: header background */
+}
+
+/* Logo stays in center */
+.header .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Login button stays at the right */
+.header .login {
+    position: absolute;
+    right: 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+body{
+    background-color: #F1F3E0;
+}
+
+
+/* Buttons container */
+div button {
+    background-color: #A1BC98; /* green background */
+    color: white;              /* text color */
+    padding: 10px 20px;        /* vertical and horizontal padding */
+    margin: 5px;               /* spacing between buttons */
+    border: none;              /* remove default border */
+    border-radius: 12px;       /* rounded corners */
+    cursor: pointer;           /* pointer on hover */
+    font-size: 16px;           /* text size */
+    transition: background-color 0.3s, transform 0.2s; /* smooth hover effect */
+}
+
+/* Hover effect */
+div button:hover {
+    background-color: #778873; /* slightly darker green on hover */
+    transform: scale(1.05);    /* small zoom effect */
 }
