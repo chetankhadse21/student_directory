@@ -3,48 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Classroom App</title>
-    <link rel="stylesheet" href="frontend/css/indexStyle.css">
+    <title>Responsive Sidebar</title>
+    <link rel="stylesheet" href="css/indexStyle.css">
 </head>
-
 <body>
 
-    <!-- Sidebar (hidden initially) -->
-    <div id="sidebar" style="display:none;">
-        <a href="about.html">About</a><br><br>
-        <a href="contact.html">Contact</a><br><br>
-        <a href="help.html">Help</a><br><br>
+    <!-- Button to open sidebar -->
+    <span class="open-btn" onclick="openSidebar()">&#9776;</span>
 
-        <button onclick="closeSidebar()">Close</button>
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <a href="#" class="close-btn" onclick="closeSidebar()">×</a>
+        <a href="#">Home</a>
+        <a href="#">Dashboard</a>
+        <a href="#">About</a>
+        <a href="#">Contact us</a>
     </div>
 
-    <!-- Top Bar -->
+    <!-- Main Content -->
     <div>
-        <!-- Menu Icon -->
-        <span onclick="openSidebar()">☰</span>
-
-        <!-- Logo -->
-        <span style="margin-left: 20px;">LOGO</span>
-
-        <!-- Login -->
-        <span style="float: right;">Login</span>
+      <span style="margin-left: 20px;">LOGO</span>
+      <span style="float: right;">Login</span>
     </div>
-
-    <hr>
 
     <!-- Section Button -->
-    <button>Section</button>
+    <div>
+      <button>Section</button>
+    </div>
 
     <br><br>
 
-    <!-- Feature Buttons -->
-    <button>Books</button>
-    <button>Assignments</button>
-    <button>Notes</button>
-    <button>Attendance</button>
+    <div>
+      <button>Books</button>
+      <button>Assignments</button>
+      <button>Notes</button>
+      <button>Attendance</button>
+    </div>
 
-    <!-- Link external script -->
-    <script src="C:\Users\HP\OneDrive\Desktop\student_directory\student_directory\frontend\js\indexScript.js"></script>
-
+    <script src="js/indexScript.js"></script>
 </body>
 </html>
+
+

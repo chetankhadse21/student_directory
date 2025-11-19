@@ -1,7 +1,7 @@
 function openSidebar() {
-    document.getElementById("sidebar").style.display = "block";
+    document.getElementById("sidebar").style.transform = "translateX(0)";
 }
 
 function closeSidebar() {
-    document.getElementById("sidebar").style.display = "none";
+    document.getElementById("sidebar").style.transform = "translateX(-250px)";
 }
