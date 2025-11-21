@@ -238,3 +238,117 @@ button:hover {
     transform: scale(1.03);
 }
 
+
+
+
+
+
+
+/* About us Styling */
+/* ========== GLOBAL STYLING ========== */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f3f6fc;
+    padding: 0;
+}
+
+/* ========== HEADER ========== */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #778873;
+    color: white;
+    padding: 15px 25px;
+    font-size: 20px;
+}
+
+.header .logo {
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.header .login {
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.header .login:hover {
+    text-decoration: underline;
+}
+
+/* ========== SIDEBAR ========== */
+#sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #778873;
+    overflow-x: hidden;
+    transition: 0.4s;
+    padding-top: 60px;
+}
+
+#sidebar a {
+    padding: 12px 30px;
+    font-size: 18px;
+    display: block;
+    color: white;
+    text-decoration: none;
+    margin-bottom: 8px;
+}
+
+#sidebar a:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 22px;
+    font-size: 30px !important;
+}
+
+/* Sidebar open button */
+.open-btn {
+    font-size: 25px;
+    margin: 10px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* ========== ABOUT SECTION ========== */
+.about-container {
+    width: 70%;
+    background: white;
+    margin: 30px auto;
+    padding: 25px 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.about-container h2 {
+    text-align: center;
+    color: #778873;
+    margin-bottom: 20px;
+}
+
+.about-container ul {
+    line-height: 1.8;
+}
+
+.about-container p {
+    font-size: 16px;
+    color: #444;
+    line-height: 1.7;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .about-container {
+        width: 90%;
+    }
+}
