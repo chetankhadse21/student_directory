@@ -5,3 +5,4 @@ function openSidebar() {
 function closeSidebar() {
     document.getElementById("sidebar").style.transform = "translateX(-250px)";
 }
+
