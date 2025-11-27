@@ -202,3 +202,61 @@ form{
 
 
 
+
+
+
+
+
+/* SIDEBAR BASE */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -250px;         /* Hidden initially */
+    width: 250px;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    border-right: 2px solid rgba(255,255,255,0.4);
+    padding: 30px 20px;
+    transition: 0.4s ease;
+    box-shadow: 0 0 20px rgba(0,0,0,0.15);
+    z-index: 999;
+}
+
+/* WHEN OPEN */
+.side-menu.open {
+    left: 0;
+}
+
+/* CLOSE BUTTON */
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    color: #1E3A5F;
+}
+
+/* MENU LIST */
+.side-menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.side-menu ul li {
+    margin: 20px 0;
+}
+
+.side-menu ul li a {
+    text-decoration: none;
+    color: #1E3A5F;
+    font-size: 18px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.side-menu ul li a:hover {
+    color: #3C8DFF;
+    padding-left: 6px;
+}
