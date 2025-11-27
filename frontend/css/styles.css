@@ -200,63 +200,70 @@ form{
 }
 
 
-
-
-
-
-
-
-
-/* SIDEBAR BASE */
-.side-menu {
+/* ===== SIDEBAR BUTTON ===== */
+.menu-toggle {
     position: fixed;
-    top: 0;
-    left: -250px;         /* Hidden initially */
+    top: 18px;
+    left: 18px;
+    background: #61A5FF;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 999;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: 0.3s ease;
+}
+
+.menu-toggle:hover {
+    background: #3C8DFF;
+    transform: scale(1.1);
+}
+/* ===== SIDEBAR ===== */
+#sideMenu {
     width: 250px;
     height: 100vh;
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(12px);
-    border-right: 2px solid rgba(255,255,255,0.4);
-    padding: 30px 20px;
-    transition: 0.4s ease;
-    box-shadow: 0 0 20px rgba(0,0,0,0.15);
-    z-index: 999;
-}
-
-/* WHEN OPEN */
-.side-menu.open {
+    background: #61A5FF;
+    padding-top: 60px;
+    position: fixed;
+    top: 0;
     left: 0;
+    transform: translateX(-260px);
+    transition: 0.4s ease;
 }
 
-/* CLOSE BUTTON */
+#sideMenu.active {
+    transform: translateX(0);
+}
+
+/* Sidebar Close button */
 .close-btn {
-    background: none;
-    border: none;
-    font-size: 28px;
+    position: absolute;
+    top: 12px;
+    right: 22px;
+    font-size: 32px;
+    color: white;
     cursor: pointer;
-    margin-bottom: 20px;
-    color: #1E3A5F;
 }
 
-/* MENU LIST */
-.side-menu ul {
+/* Sidebar links */
+#sideMenu ul {
     list-style: none;
-    padding: 0;
+    padding-left: 0;
 }
 
-.side-menu ul li {
-    margin: 20px 0;
-}
-
-.side-menu ul li a {
-    text-decoration: none;
-    color: #1E3A5F;
+#sideMenu ul li a {
+    padding: 14px 25px;
+    display: block;
     font-size: 18px;
-    font-weight: 500;
-    transition: 0.3s;
+    color: #E6F4FF;
+    text-decoration: none;
+    transition: 0.3s ease;
 }
 
-.side-menu ul li a:hover {
-    color: #3C8DFF;
-    padding-left: 6px;
+#sideMenu ul li a:hover {
+    background: #3C8DFF;
+    padding-left: 35px;
 }

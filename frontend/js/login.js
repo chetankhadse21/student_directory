@@ -11,24 +11,19 @@ loginBtn.addEventListener('click', () => {
     container.classList.remove('active');
 });
 
-
-// SIDEBAR OPEN / CLOSE
+const menuToggle = document.getElementById("menuToggle");
 const sideMenu = document.getElementById("sideMenu");
-const closeMenuBtn = document.getElementById("closeMenu");
+const closeMenu = document.getElementById("closeMenu");
 
-// Open sidebar
-function openSidebar() {
-    sideMenu.classList.add("open");
+if (menuToggle && sideMenu && closeMenu) {
+  menuToggle.addEventListener("click", () => {
+      sideMenu.style.transform = "translateX(0)";
+  });
+
+  closeMenu.addEventListener("click", () => {
+      sideMenu.style.transform = "translateX(-250px)";
+  });
 }
-
-// Close sidebar
-closeMenuBtn.addEventListener("click", () => {
-    sideMenu.classList.remove("open");
-});
-
-
-
-console.log("JS IS RUNNING");
 
 
 
