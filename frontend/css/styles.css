@@ -16,6 +16,76 @@ body {
   background: linear-gradient(90deg,#e2e2e2,#c9d6ff);
 }
 
+
+/* ===== SIDEBAR BUTTON ===== */
+.menu-toggle {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    background: #61A5FF;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 999;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: 0.3s ease;
+}
+
+.menu-toggle:hover {
+    background: #3C8DFF;
+    transform: scale(1.1);
+}
+/* ===== SIDEBAR ===== */
+#sideMenu {
+    width: 250px;
+    height: 100vh;
+    background: #61A5FF;
+    padding-top: 60px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translateX(-260px);
+    transition: 0.4s ease;
+}
+
+#sideMenu.active {
+    transform: translateX(0);
+}
+
+/* Sidebar Close button */
+.close-btn {
+    position: absolute;
+    top: 12px;
+    right: 22px;
+    font-size: 32px;
+    color: white;
+    cursor: pointer;
+}
+
+/* Sidebar links */
+#sideMenu ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+#sideMenu ul li a {
+    padding: 14px 25px;
+    display: block;
+    font-size: 18px;
+    color: #E6F4FF;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+#sideMenu ul li a:hover {
+    background: #3C8DFF;
+    padding-left: 35px;
+}
+
+
 .container{
   position: relative;
   width: 850px;
@@ -199,71 +269,3 @@ form{
   box-shadow: none;
 }
 
-
-/* ===== SIDEBAR BUTTON ===== */
-.menu-toggle {
-    position: fixed;
-    top: 18px;
-    left: 18px;
-    background: #61A5FF;
-    color: white;
-    border: none;
-    padding: 10px 14px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 20px;
-    z-index: 999;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    transition: 0.3s ease;
-}
-
-.menu-toggle:hover {
-    background: #3C8DFF;
-    transform: scale(1.1);
-}
-/* ===== SIDEBAR ===== */
-#sideMenu {
-    width: 250px;
-    height: 100vh;
-    background: #61A5FF;
-    padding-top: 60px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    transform: translateX(-260px);
-    transition: 0.4s ease;
-}
-
-#sideMenu.active {
-    transform: translateX(0);
-}
-
-/* Sidebar Close button */
-.close-btn {
-    position: absolute;
-    top: 12px;
-    right: 22px;
-    font-size: 32px;
-    color: white;
-    cursor: pointer;
-}
-
-/* Sidebar links */
-#sideMenu ul {
-    list-style: none;
-    padding-left: 0;
-}
-
-#sideMenu ul li a {
-    padding: 14px 25px;
-    display: block;
-    font-size: 18px;
-    color: #E6F4FF;
-    text-decoration: none;
-    transition: 0.3s ease;
-}
-
-#sideMenu ul li a:hover {
-    background: #3C8DFF;
-    padding-left: 35px;
-}
