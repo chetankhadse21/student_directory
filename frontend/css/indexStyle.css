@@ -1,12 +1,78 @@
-@import url('https://fonts.googleapis.com/css2?family=Stack+Sans+Text:wght@200..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
+/* Global */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins',sans-serif;
+    font-family: "Poppins", sans-serif;
 }
-/* Sidebar Styling */
+
+body {
+    background: linear-gradient(135deg, #E6F4FF, #D0E8FF);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ===== HEADER ===== */
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    background: rgba(58, 166, 243, 0.65);
+    backdrop-filter: blur(12px);
+    border-bottom: 2px solid rgba(255,255,255,0.5);
+    position: relative;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1E3A5F;
+    letter-spacing: 2px;
+}
+
+/* Login button top-right */
+.login {
+    position: absolute;
+    right: 20px;
+    font-size: 16px;
+    color: #1E3A5F;
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: 0.3s ease;
+}
+
+.login:hover {
+    background: #61A5FF;
+    color: white;
+}
+
+/* ===== SIDEBAR BUTTON ===== */
+.menu-toggle {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    background: #61A5FF;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 999;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: 0.3s ease;
+}
+
+.menu-toggle:hover {
+    background: #3C8DFF;
+    transform: scale(1.1);
+}
+
+/* ===== SIDEBAR ===== */
 #sideMenu {
     width: 250px;
     height: 100vh;
@@ -15,339 +81,78 @@
     position: fixed;
     top: 0;
     left: 0;
+    transform: translateX(-260px);
+    transition: 0.4s ease;
+}
 
-    /* SIDEBAR HIDDEN BY DEFAULT */
-    transform: translateX(-250px);
-    transition: transform 0.3s ease;
+#sideMenu.active {
+    transform: translateX(0);
+}
+
+/* Sidebar Close button */
+.close-btn {
+    position: absolute;
+    top: 12px;
+    right: 22px;
+    font-size: 32px;
+    color: white;
+    cursor: pointer;
 }
 
 /* Sidebar links */
-#sideMenu a {
-    padding: 15px 20px;
-    text-decoration: none;
-    font-size: 20px;
+#sideMenu ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+#sideMenu ul li a {
+    padding: 14px 25px;
     display: block;
+    font-size: 18px;
     color: #E6F4FF;
+    text-decoration: none;
+    transition: 0.3s ease;
 }
 
-#sideMenu a:hover {
+#sideMenu ul li a:hover {
     background: #3C8DFF;
+    padding-left: 35px;
 }
 
-/* Close button */
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 35px;
-    color: #E6F4FF;
-    cursor: pointer;
-}
-
-/* Open button */
-.menu-toggle {
-  position: fixed;
-  top: 15px;
-  left: 15px;
-  background: #61A5FF;
-  color: #E6F4FF;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  z-index: 2001;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-  transition: background 0.3s;
-}
-
-/* Main content */
-.content {
-    margin-left: 20px;
-    padding: 20px;
-}
-
-.header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    padding: 10px 0;
-    background-color: #D0E8FF;
-}
-
-.header .logo {
-    font-size: 24px;
-    font-weight: bold;
-    justify-content:center;
-    color: #1E3A5F;
-}
-
-.header .login {
-    position: absolute;
-    right: 20px;
-    font-size: 16px;
-    cursor: pointer;
-    color: #1E3A5F;
-}
-
-body{
-    background-color: #E6F4FF;
-}
-
-/* Buttons container */
+/* ===== MAIN BUTTONS ===== */
 div button {
-    background-color: #3C8DFF;
+    background: rgba(97,165,255,0.8);
     color: white;
-    padding: 10px 20px;
-    margin: 5px;
+    padding: 12px 22px;
+    margin: 8px;
     border: none;
-    border-radius: 12px;
+    border-radius: 14px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-/* Hover effect */
-div button:hover {
-    background-color: #61A5FF;
-    transform: scale(1.05);
-}
-
-/* Contact page Styling */
-
-.contact-card {
-    width: 330px;
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    margin: 20px auto;
-    font-family: Arial, sans-serif;
-    transition: 0.3s ease;
-}
-
-.contact-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 30px rgba(0,0,0,0.15);
-}
-
-.contact-card h2 {
-    margin-bottom: 15px;
-    text-align: center;
-    color: #1E3A5F;
-}
-
-.contact-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 12px 0;
-    font-size: 16px;
-    color: #1E3A5F;
-    transition: 0.2s ease;
-}
-
-.contact-item i {
     font-size: 18px;
-    color: #3C8DFF;
-    transition: 0.3s ease;
-}
-
-.contact-item:hover i {
-    transform: scale(1.2);
-    color: #61A5FF;
-}
-
-.contact-item a {
-    text-decoration: none;
-    color: #3C8DFF;
     font-weight: 500;
-    transition: 0.2s ease;
-}
-
-.contact-item a:hover {
-    color: #61A5FF;
-    text-decoration: underline;
-}
-
-.form-card {
-    width: 330px;
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    margin: 20px auto;
-    font-family: Arial, sans-serif;
     transition: 0.3s ease;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
 }
 
-.form-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 30px rgba(0,0,0,0.15);
-}
-
-.form-card h3 {
-    text-align: center;
-    margin-bottom: 15px;
-    color: #1E3A5F;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin-bottom: 5px;
-    font-weight: 600;
-    color: #1E3A5F;
-}
-
-input, textarea {
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #61A5FF;
-    font-size: 15px;
-    outline: none;
-    transition: 0.2s ease;
-    font-family: inherit;
-}
-
-input:focus,
-textarea:focus {
-    border-color: #3C8DFF;
-    box-shadow: 0 0 6px rgba(97,165,255,0.3);
-}
-
-button {
-    margin-top: 15px;
-    padding: 10px;
+/* Hover animation */
+div button:hover {
     background: #3C8DFF;
-    color: white;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s ease;
+    transform: scale(1.08);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
 }
 
-button:hover {
-    background: #61A5FF;
-    transform: scale(1.03);
+/* Click animation */
+div button:active {
+    transform: scale(0.95);
 }
 
-/* About us Styling */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: #E6F4FF;
-    padding: 0;
+/* Optional: Glow effect */
+div button:hover {
+    box-shadow: 0 0 12px #61A5FF;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #61A5FF;
-    color: white;
-    padding: 15px 25px;
-    font-size: 20px;
-}
-
-.header .logo {
-    font-weight: bold;
-    font-size: 22px;
-}
-
-.header .login {
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.header .login:hover {
-    text-decoration: underline;
-}
-
-/* SIDEBAR */
-#sidebar {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background: #61A5FF;
-    overflow-x: hidden;
-    transition: 0.4s;
-    padding-top: 60px;
-}
-
-#sidebar a {
-    padding: 12px 30px;
-    font-size: 18px;
-    display: block;
-    color: white;
-    text-decoration: none;
-    margin-bottom: 8px;
-}
-
-#sidebar a:hover {
-    background: #3C8DFF;
-}
-
-.close-btn {
-    position: absolute;
-    top: 15px;
-    right: 22px;
-    font-size: 30px !important;
-}
-
-/* Sidebar open button */
-.open-btn {
-    font-size: 25px;
-    margin: 10px 20px;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-/* ABOUT SECTION */
-.about-container {
-    width: 70%;
-    background: white;
-    margin: 30px auto;
-    padding: 25px 30px;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-}
-
-.about-container h2 {
+/* Centering content */
+div {
     text-align: center;
-    color: #1E3A5F;
-    margin-bottom: 20px;
+    margin-top: 25px;
 }
-
-.about-container ul {
-    line-height: 1.8;
-}
-
-.about-container p {
-    font-size: 16px;
-    color: #1E3A5F;
-    line-height: 1.7;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-    .about-container {
-        width: 90%;
-    }
-}
-
-
-
-
-
-
-
-
