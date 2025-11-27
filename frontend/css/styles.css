@@ -17,6 +17,26 @@ body {
 }
 
 
+/* ===== HEADER ===== */
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    background: rgba(58, 166, 243, 0.65);
+    backdrop-filter: blur(12px);
+    border-bottom: 2px solid rgba(255,255,255,0.5);
+    position: relative;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1E3A5F;
+    letter-spacing: 2px;
+}
+
+
 /* ===== SIDEBAR BUTTON ===== */
 .menu-toggle {
     position: fixed;
@@ -268,4 +288,10 @@ form{
   border: 2px solid #fff;
   box-shadow: none;
 }
+
+
+
+
+
+
 
