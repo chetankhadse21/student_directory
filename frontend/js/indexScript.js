@@ -22,3 +22,13 @@ if (menuToggle && sideMenu && closeMenu) {
 
 
 
+const sectionBtn = document.getElementById("sectionBtn");
+const semesterMenu = document.getElementById("semesterMenu");
+
+sectionBtn.addEventListener("click", () => {
+    if (semesterMenu.style.display === "none") {
+        semesterMenu.style.display = "block";
+    } else {
+        semesterMenu.style.display = "none";
+    }
+});
