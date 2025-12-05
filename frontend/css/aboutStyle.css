@@ -6,46 +6,70 @@
     font-family: 'Poppins', sans-serif;
 }
 
-/* Body Background */
+/* Animated Gradient Background */
 body {
-    background: linear-gradient(135deg, #E6F4FF, #D0E8FF);
     color: #1E3A5F;
-    line-height: 1.6;
+    background: linear-gradient(135deg, #E6F4FF, #D0E8FF, #61A5FF);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+/* Particle Background */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: -2;
+}
+
+.particles span {
+    position: absolute;
+    display: block;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: float linear infinite;
+}
+
+/* Random particle positions and animation speeds */
+.particles span:nth-child(1)  { width:5px; height:5px; top:10%; left:20%; animation-duration:18s; }
+.particles span:nth-child(2)  { width:4px; height:4px; top:80%; left:10%; animation-duration:22s; }
+.particles span:nth-child(3)  { width:6px; height:6px; top:50%; left:50%; animation-duration:20s; }
+.particles span:nth-child(4)  { width:5px; height:5px; top:30%; left:70%; animation-duration:25s; }
+.particles span:nth-child(5)  { width:4px; height:4px; top:70%; left:80%; animation-duration:30s; }
+/* ... repeat for remaining spans with different positions/sizes ... */
+
+@keyframes float {
+    0% { transform: translateY(0) translateX(0); opacity: 0.7; }
+    50% { transform: translateY(-80px) translateX(50px); opacity: 0.5; }
+    100% { transform: translateY(0) translateX(0); opacity: 0.7; }
 }
 
 
-
-
-
-/* Section Titles */
-.about-section h2, .team-section h3 {
-    color: #3C8DFF;
-    margin-bottom: 15px;
-}
-
-/* About Container */
+/* Glassmorphic containers */
 .about-container, .team-container {
     max-width: 900px;
     margin: 40px auto;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(255,255,255,0.7);
     border-radius: 20px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.1);
     backdrop-filter: blur(10px);
 }
 
-.about-section p {
-    margin-bottom: 15px;
-}
-
-/* Lists */
-.about-section ul {
-    list-style: disc inside;
-    margin-left: 15px;
-}
+.about-section p, .team-item p { margin-bottom: 15px; }
 
 .team-item {
-    background: rgba(230, 244, 255, 0.5);
+    background: rgba(230,244,255,0.5);
     margin: 15px 0;
     padding: 15px;
     border-radius: 15px;
@@ -57,106 +81,8 @@ body {
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
-/* HR Styling */
-hr {
-    border: none;
-    border-top: 2px solid #61A5FF;
-    margin: 20px 0;
-}
+hr { border: none; border-top: 2px solid #61A5FF; margin: 20px 0; }
 
-/* Headings */
-h2, h3 {
-    font-weight: 600;
-}
+h2, h3 { color: #3C8DFF; font-weight: 600; }
 
 
-
-
-
-
-
-
-
-/* PAGE BACKGROUND */
-body {
-    background: linear-gradient(135deg, #f5f7f8, #e6f1fb);
-    color: #1E3A5F;
-    font-family: "Poppins", sans-serif;
-}
-
-/* GLASS SECTIONS */
-.about-container,
-.team-container,
-.about-section,
-.team-section {
-    background: rgba(208, 232, 255, 0.28);  /* #D0E8FF tint */
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 18px;
-    padding: 25px;
-    margin: 20px auto;
-    width: 90%;
-
-    /* Gradient border using your colors */
-    border: 2px solid transparent;
-    background-clip: padding-box, border-box;
-    border-image: linear-gradient(
-        135deg,
-        #E6F4FF,
-        #D0E8FF,
-        #61A5FF,
-        #3C8DFF
-    ) 1;
-
-    box-shadow: 0 4px 18px rgba(30, 58, 95, 0.18);
-}
-
-/* TEAM ITEM CARDS */
-.team-item {
-    background: rgba(230, 244, 255, 0.22); /* #E6F4FF tint */
-    padding: 18px;
-    border-radius: 15px;
-    margin: 12px 0;
-
-    border: 2px solid transparent;
-    background-clip: padding-box, border-box;
-
-    /* Inner soft gradient border */
-    border-image: linear-gradient(
-        135deg,
-        #D0E8FF,
-        #61A5FF,
-        #3C8DFF
-    ) 1;
-
-    backdrop-filter: blur(10px);
-    box-shadow: 0 3px 12px rgba(30, 58, 95, 0.20);
-}
-
-/* HEADINGS */
-.about-container h2,
-.team-container h2,
-.team-section h3,
-.about-section h2 {
-    color: #1E3A5F; /* dark blue-grey */
-    text-shadow: 0 0 2px rgba(255,255,255,0.5);
-}
-
-/* PARAGRAPH TEXT */
-.about-container p,
-.team-container p,
-.team-item p {
-    color: #1E3A5F;
-    line-height: 1.6;
-}
-
-/* SECTION DIVIDERS */
-hr {
-    border: none;
-    height: 2px;
-    width: 90%;
-    background: #84b6f7;
-    margin: 25px auto;
-    border-radius: 20px;
-    opacity: 0.85;
-}
