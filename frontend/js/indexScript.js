@@ -25,7 +25,14 @@ if (menuToggle && sideMenu && closeMenu) {
 const btn = document.querySelector(".dropbtn");
 const menu = document.querySelector(".dropdown-content");
 
-btn.addEventListener("click", () => {
+btn.addEventListener("click", (event) => {
+  event.stopPropagation(); // prevent closing immediately
   menu.classList.toggle("show");
 });
+
+// Close dropdown when clicking anywhere else
+document.addEventListener("click", () => {
+  menu.classList.remove("show");
+});
+
 

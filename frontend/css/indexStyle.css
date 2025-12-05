@@ -302,9 +302,8 @@ body {
   color: white;
 }
 
-/* Show dropdown when hovering button */
-.dropdown:hover .dropdown-content {
-  display: block;
-}
 
+.show {
+  display: block !important;
+}
 
