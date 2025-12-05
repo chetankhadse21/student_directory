@@ -3,70 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Students management Application</title>
+    <title>Students Management Application</title>
     <link rel="stylesheet" href="css/indexStyle.css">
 </head>
 <body>
 
-
-    <!-- Main Content / Header -->
+    <!-- HEADER -->
     <div class="header">
-      <button class="menu-toggle" id="menuToggle">☰</button>
-      <a href="https://i.ibb.co/21KTgLmN/logo1.png" class="logo">
-        <img src="https://i.ibb.co/21KTgLmN/logo1.png" alt="Logo">
-      </a>
-        <a href="login.html" class="login">Login</a>
-      </div>
 
-    <!-- Button to open sidebar -->
-        
-      
-    <!-- Sidebar -->
+        <!-- Sidebar Toggle Button -->
+        <button class="menu-toggle" id="menuToggle">☰</button>
+
+        <!-- Logo -->
+        <a href="index.html" class="logo">
+            <img src="https://i.ibb.co/21KTgLmN/logo1.png" alt="Logo">
+        </a>
+
+        <!-- Login Button -->
+        <a href="login.html" class="login">
+          <img src="profile-img.png" alt="Description of Image" height="55px" width="90px">
+        </a>
+
+    </div>
+
+
+    <!-- SIDEBAR (KEEP OUTSIDE HEADER BUT ATTACHED VISUALLY) -->
     <nav id="sideMenu" class="side-menu">
-    <button class="close-btn" id="closeMenu">×</button>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="semester.html">Semester</a></li>
-      <li><a href="help.html">Help</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="login.html">Login</a></li>
-    </ul>
-  </nav>
+        <button class="close-btn" id="closeMenu">×</button>
+
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="semester.html">Semester</a></li>
+            <li><a href="help.html">Help</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="login.html">Login</a></li>
+        </ul>
+    </nav>
 
 
 
+    <!-- SECTION DROPDOWN (Top-Center) -->
+    <div class="top-center">
+        <div class="dropdown">
+            <button class="dropbtn">Section</button>
 
-      <!-- Section Button -->
+            <div class="dropdown-content">
+                <a href="#">Semester 1</a>
+                <a href="#">Semester 2</a>
+                <a href="#">Semester 3</a>
+                <a href="#">Semester 4</a>
+                <a href="#">Semester 5</a>
+                <a href="#">Semester 6</a>
+                <a href="#">Semester 7</a>
+                <a href="#">Semester 8</a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Main Buttons -->
     <div>
-      <button id="sectionBtn">Section</button>
-
-      <!-- Hidden Semesters Menu -->
-      <div id="semesterMenu" style="display:none; margin-top:10px;">
-        <button>Semester 1</button>
-        <button>Semester 2</button>
-        <button>Semester 3</button>
-        <button>Semester 4</button>
-        <button>Semester 5</button>
-        <button>Semester 6</button>
-        <button>Semester 7</button>
-        <button>Semester 8</button>
-      </div>
+        <button>Books</button>
+        <button>Assignments</button>
+        <button>Notes</button>
+        <button>Attendance</button>
     </div>
 
-    </div>
-
-    <br><br>
-
-    <div >
-      <button>Books</button>
-      <button>Assignments</button>
-      <button>Notes</button>
-      <button>Attendance</button>
-    </div>
 
     <script src="js/indexScript.js"></script>
 </body>
 </html>
-
-
