@@ -129,7 +129,12 @@ function showCards(type) {
         if (type === "attendance") {
             card.innerText = `${title} (Sem ${selectedSemester})`;
         } else {
-            card.innerText = `${title} ${i} (Sem ${selectedSemester})`;
+              card.innerHTML = `
+        <i class='bx bx-book'></i>
+        ${title} ${type === "attendance" ? "" : i} <br>
+        <span style="font-size:14px; opacity:0.8;">Sem ${selectedSemester}</span>
+        `;
+
         }
 
         cardContainer.appendChild(card);
