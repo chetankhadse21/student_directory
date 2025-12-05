@@ -1,0 +1,123 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Body Background */
+body {
+    background: linear-gradient(135deg, #E6F4FF, #D0E8FF);
+    color: #1E3A5F;
+    line-height: 1.6;
+}
+
+
+
+
+
+/* Section Titles */
+.about-section h2, .team-section h3 {
+    color: #3C8DFF;
+    margin-bottom: 15px;
+}
+
+/* About Container */
+.about-container, .team-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+}
+
+.about-section p {
+    margin-bottom: 15px;
+}
+
+/* Lists */
+.about-section ul {
+    list-style: disc inside;
+    margin-left: 15px;
+}
+
+.team-item {
+    background: rgba(230, 244, 255, 0.5);
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 15px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.team-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* HR Styling */
+hr {
+    border: none;
+    border-top: 2px solid #61A5FF;
+    margin: 20px 0;
+}
+
+/* Headings */
+h2, h3 {
+    font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+/* Particle container */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: -2;
+}
+
+/* Particle base style */
+.particles span {
+    position: absolute;
+    display: block;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: float linear infinite;
+}
+
+/* Generate random sizes, positions, and speeds */
+.particles span:nth-child(1)  { width:5px; height:5px; top:10%; left:20%; animation-duration:18s; }
+.particles span:nth-child(2)  { width:4px; height:4px; top:80%; left:10%; animation-duration:22s; }
+.particles span:nth-child(3)  { width:6px; height:6px; top:50%; left:50%; animation-duration:20s; }
+.particles span:nth-child(4)  { width:5px; height:5px; top:30%; left:70%; animation-duration:25s; }
+.particles span:nth-child(5)  { width:4px; height:4px; top:70%; left:80%; animation-duration:30s; }
+.particles span:nth-child(6)  { width:6px; height:6px; top:20%; left:60%; animation-duration:28s; }
+.particles span:nth-child(7)  { width:5px; height:5px; top:60%; left:30%; animation-duration:26s; }
+.particles span:nth-child(8)  { width:4px; height:4px; top:40%; left:10%; animation-duration:24s; }
+.particles span:nth-child(9)  { width:6px; height:6px; top:15%; left:90%; animation-duration:32s; }
+.particles span:nth-child(10) { width:5px; height:5px; top:75%; left:25%; animation-duration:20s; }
+/* Add more for remaining spans similarly */
+
+/* Particle floating animation */
+@keyframes float {
+    0% { transform: translateY(0) translateX(0); opacity: 0.7; }
+    50% { transform: translateY(-80px) translateX(50px); opacity: 0.5; }
+    100% { transform: translateY(0) translateX(0); opacity: 0.7; }
+}
+
+
+
