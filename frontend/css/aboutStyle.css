@@ -72,3 +72,91 @@ h2, h3 {
 
 
 
+
+
+
+
+
+/* PAGE BACKGROUND */
+body {
+    background: linear-gradient(135deg, #E6F4FF, #D0E8FF);
+    color: #1E3A5F;
+    font-family: "Poppins", sans-serif;
+}
+
+/* GLASS SECTIONS */
+.about-container,
+.team-container,
+.about-section,
+.team-section {
+    background: rgba(208, 232, 255, 0.28);  /* #D0E8FF tint */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 18px;
+    padding: 25px;
+    margin: 20px auto;
+    width: 90%;
+
+    /* Gradient border using your colors */
+    border: 2px solid transparent;
+    background-clip: padding-box, border-box;
+    border-image: linear-gradient(
+        135deg,
+        #E6F4FF,
+        #D0E8FF,
+        #61A5FF,
+        #3C8DFF
+    ) 1;
+
+    box-shadow: 0 4px 18px rgba(30, 58, 95, 0.18);
+}
+
+/* TEAM ITEM CARDS */
+.team-item {
+    background: rgba(230, 244, 255, 0.22); /* #E6F4FF tint */
+    padding: 18px;
+    border-radius: 15px;
+    margin: 12px 0;
+
+    border: 2px solid transparent;
+    background-clip: padding-box, border-box;
+
+    /* Inner soft gradient border */
+    border-image: linear-gradient(
+        135deg,
+        #D0E8FF,
+        #61A5FF,
+        #3C8DFF
+    ) 1;
+
+    backdrop-filter: blur(10px);
+    box-shadow: 0 3px 12px rgba(30, 58, 95, 0.20);
+}
+
+/* HEADINGS */
+.about-container h2,
+.team-container h2,
+.team-section h3,
+.about-section h2 {
+    color: #1E3A5F; /* dark blue-grey */
+    text-shadow: 0 0 2px rgba(255,255,255,0.5);
+}
+
+/* PARAGRAPH TEXT */
+.about-container p,
+.team-container p,
+.team-item p {
+    color: #1E3A5F;
+    line-height: 1.6;
+}
+
+/* SECTION DIVIDERS */
+hr {
+    border: none;
+    height: 2px;
+    width: 90%;
+    background: #61A5FF;
+    margin: 25px auto;
+    border-radius: 20px;
+    opacity: 0.85;
+}
