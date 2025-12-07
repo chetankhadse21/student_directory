@@ -489,7 +489,6 @@ body {
     transition: 0.25s ease;
 }
 
-/* Blue button (Preview) */
 .preview-btn {
     background: #61A5FF;       
 }
@@ -498,11 +497,10 @@ body {
     transform: translateY(-2px);
 }
 
-/* Green button (Download) — optional but keeping contrast */
 .download-btn {
-    background: #2ecc71;
+    background: #61A5FF;
 }
 .download-btn:hover {
-    background: #28b463;
+    background: #3C8DFF;
     transform: translateY(-2px);
 }
