@@ -101,6 +101,11 @@ semesterLinks.forEach((sem, index) => {
 
 
 
+
+
+
+// logic for cards
+
 function showCards(type) {
 
     if (!selectedSemester) {
