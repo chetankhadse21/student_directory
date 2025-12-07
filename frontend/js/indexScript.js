@@ -146,3 +146,93 @@ function showCards(type) {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+// logic for the files at the assignment , books , and notes option and a download and preview buttton
+// ----------------------
+// GOFILE LINKS MAPPING
+// ----------------------
+const fileLinks = {
+    books: {
+        1: "https://gofile.io/d/q0tK3p",
+        2: "https://gofile.io/d/q0tK3p",
+        3: "https://gofile.io/d/q0tK3p",
+        4: "https://gofile.io/d/q0tK3p",
+        5: "https://gofile.io/d/q0tK3p"
+    },
+    assignments: {
+        1: "https://gofile.io/d/q0tK3p",
+        2: "https://gofile.io/d/q0tK3p",
+        3: "https://gofile.io/d/q0tK3p",
+        4: "https://gofile.io/d/q0tK3p",
+        5: "https://gofile.io/d/q0tK3p"
+    },
+    notes: {
+        1: "https://gofile.io/d/q0tK3p",
+        2: "https://gofile.io/d/q0tK3p",
+        3: "https://gofile.io/d/q0tK3p",
+        4: "https://gofile.io/d/q0tK3p",
+        5: "https://gofile.io/d/q0tK3p"
+    }
+};
+
+
+
+// -------------------------
+// UPDATED CARD GENERATOR
+// -------------------------
+function showCards(type) {
+
+    if (!selectedSemester) {
+        alert("Please select a semester first!");
+        return;
+    }
+
+    cardContainer.innerHTML = "";
+
+    let title = "";
+    let count = 5;
+
+    if (type === "books") title = "Book";
+    else if (type === "assignments") title = "Assignment";
+    else if (type === "notes") title = "Note";
+    else if (type === "attendance") {
+        title = "Attendance";
+        count = 1;
+    } 
+    else title = "Item";
+
+    for (let i = 1; i <= count; i++) {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        if (type === "attendance") {
+            card.innerText = `${title} (Sem ${selectedSemester})`;
+        } else {
+            const fileUrl = fileLinks[type]?.[i] || "#";
+
+            card.innerHTML = `
+                <i class='bx bx-file'></i>
+                <h3>${title} ${i}</h3>
+                <p>Semester ${selectedSemester}</p>
+
+                <div class="btn-group">
+                    <a class="preview-btn" href="${fileUrl}" target="_blank">Preview</a>
+                    <a class="download-btn" href="${fileUrl}" download>Download</a>
+                </div>
+            `;
+        }
+
+        cardContainer.appendChild(card);
+    }
+}
+
