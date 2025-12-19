@@ -75,6 +75,48 @@
 <div id="cardContainer" class="card-container"></div>
 
 
+<!-- ===== NOTIFICATIONS (OPTION 6) ===== -->
+<section class="notification-bar" id="notificationBar">
+    <span>📢 Assignment 3 deadline: <strong>20 Sept</strong></span>
+    <button class="close-note">✖</button>
+</section>
+
+
+<!-- ===== ACADEMIC SNAPSHOT (OPTION 4) ===== -->
+<div class="snapshot-cards">
+    <div class="snap-card" onclick="openPage('attendance.html')">
+        <h3>Attendance</h3>
+        <p>82%</p>
+    </div>
+
+    <div class="snap-card" onclick="openPage('assignments.html')">
+        <h3>Assignments</h3>
+        <p>6 / 8</p>
+    </div>
+
+    <div class="snap-card" onclick="openPage('notes.html')">
+        <h3>Notes</h3>
+        <p>12 PDFs</p>
+    </div>
+</div>
+
+
+<!-- ===== RECENTLY ACCESSED (OPTION 5) ===== -->
+<section class="recent">
+    <h2>🕒 Recently Accessed</h2>
+
+    <ul>
+        <li onclick="openPage('notes.html')">Web Technology – Unit 3 Notes</li>
+        <li onclick="openPage('assignments.html')">DBMS Assignment 2</li>
+        <li onclick="openPage('semester.html')">Semester 5 Timetable</li>
+    </ul>
+</section>
+
+
+<button id="darkToggle">🌙</button>
+
+
+
 
     <script src="js/indexScript.js"></script>
 </body>

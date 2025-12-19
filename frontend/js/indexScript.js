@@ -236,3 +236,97 @@ function showCards(type) {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.querySelector(".close-note").onclick = () => {
+    document.getElementById("notificationBar").style.display = "none";
+};
+
+
+
+
+
+
+
+function openPage(page) {
+    window.location.href = page;
+}
+
+
+
+
+
+
+
+const toggle = document.getElementById("darkToggle");
+
+// Load preference
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+}
+
+// Toggle
+toggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+
+    // Save preference
+    if (document.body.classList.contains("dark")) {
+        localStorage.setItem("theme", "dark");
+    } else {
+        localStorage.setItem("theme", "light");
+    }
+});
+
+// Reusable navigation
+function openPage(page) {
+    window.location.href = page;
+}
+
+
+
+
+
+
+
+// ==========================
+// DARK MODE TOGGLE (SINGLE SOURCE)
+// ==========================
+document.addEventListener("DOMContentLoaded", () => {
+    const darkToggle = document.getElementById("darkToggle");
+
+    if (!darkToggle) return; // prevents errors on other pages
+
+    // Load saved theme
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark");
+    }
+
+    darkToggle.addEventListener("click", () => {
+        document.body.classList.toggle("dark");
+
+        localStorage.setItem(
+            "theme",
+            document.body.classList.contains("dark") ? "dark" : "light"
+        );
+    });
+});
