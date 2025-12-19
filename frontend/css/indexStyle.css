@@ -518,37 +518,3 @@ body {
 
 
 
-/* Styling for semister page */
-
-body {
-    font-family: Arial, sans-serif;
-    background: #E6F4FF;
-    margin: 0;
-    padding: 40px;
-    color: #1E3A5F;
-}
-
-.container {
-    max-width: 1000px;
-    margin: auto;
-}
-
-.card-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.card-center {
-    display: flex;
-    justify-content: center;
-}
-
-.card {
-    background: #D0E8FF;
-    border-radius: 12px;
-    padding: 20px;
-    width: 48%;
-    box-shadow: 0 6px 15px rgb
-}
