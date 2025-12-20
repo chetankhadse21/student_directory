@@ -308,7 +308,9 @@ document.addEventListener("DOMContentLoaded", () => {
             "theme",
             document.body.classList.contains("dark") ? "dark" : "light"
         );
+        darkToggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
     });
+    
 });
 
 
@@ -318,5 +320,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-darkToggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+
 
