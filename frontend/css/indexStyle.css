@@ -629,7 +629,7 @@ body {
 
 /* ===== SNAPSHOT ===== */
 .snapshot {
-    max-width: 900px;
+    max-width: 420px;
     margin: 60px auto;
     text-align: center;
 }
@@ -640,15 +640,17 @@ body {
 
 .snapshot-cards {
     display: flex;
+    justify-content: center;   /* 👈 THIS centers the cards */
     gap: 20px;
 }
 
 .snap-card {
-    flex: 1;
-    padding: 25px;
+    flex: 0 0 350px;   /* 👈 controls width */
+    padding: 18px;
     background: rgba(255,255,255,0.45);
     border-radius: 20px;
     box-shadow: 0 12px 25px rgba(60,141,255,0.35);
+
 }
 
 .snap-card p {
