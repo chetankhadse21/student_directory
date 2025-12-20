@@ -277,26 +277,6 @@ function openPage(page) {
 
 
 
-
-const toggle = document.getElementById("darkToggle");
-
-// Load preference
-if (localStorage.getItem("theme") === "dark") {
-    document.body.classList.add("dark");
-}
-
-// Toggle
-toggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-
-    // Save preference
-    if (document.body.classList.contains("dark")) {
-        localStorage.setItem("theme", "dark");
-    } else {
-        localStorage.setItem("theme", "light");
-    }
-});
-
 // Reusable navigation
 function openPage(page) {
     window.location.href = page;
@@ -314,7 +294,7 @@ function openPage(page) {
 document.addEventListener("DOMContentLoaded", () => {
     const darkToggle = document.getElementById("darkToggle");
 
-    if (!darkToggle) return; // prevents errors on other pages
+    if (!darkToggle) return;
 
     // Load saved theme
     if (localStorage.getItem("theme") === "dark") {
@@ -330,3 +310,13 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     });
 });
+
+
+
+
+
+
+
+
+darkToggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+

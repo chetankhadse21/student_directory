@@ -47,8 +47,6 @@ button {
 
 /* Login button top-right */
 .login {
-    position: absolute;
-    right: 20px;
     font-size: 16px;
     color: #1E3A5F;
     text-decoration: none;
@@ -580,13 +578,6 @@ body {
     align-items: center;
 }
 
-#darkToggle {
-    background: none;
-    border: none;
-    font-size: 22px;
-    cursor: pointer;
-    color: white;
-}
 
 .profile {
     font-size: 24px;
@@ -689,22 +680,6 @@ body {
     font-weight: 600;
 }
 
-/* ===== DARK MODE ===== */
-body.dark {
-    background: #0F172A;
-    color: #E5E7EB;
-}
-
-body.dark .header {
-    background: #1E3A8A;
-}
-
-body.dark .snap-card,
-body.dark .recent,
-body.dark .notification-bar {
-    background: rgba(255,255,255,0.08);
-    color: #E5E7EB;
-}
 
 
 
@@ -761,8 +736,116 @@ body.dark .notification-bar {
     left: 15px;
 }
 
-.login,
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===== DARK MODE (FINAL OVERRIDE) ===== */
+body.dark {
+    background: #0F172A !important;
+    color: #E5E7EB !important;
+}
+
+/* Header */
+body.dark .header {
+    background: #1E293B;
+}
+
+/* Cards */
+body.dark .card,
+body.dark .snap-card,
+body.dark .recent,
+body.dark .notification-bar {
+    background: rgba(255,255,255,0.08);
+    color: #E5E7EB;
+}
+
+/* Buttons */
+body.dark button,
+body.dark .dropbtn {
+    background: #334155;
+    color: #E5E7EB;
+}
+
+/* Sidebar */
+body.dark #sideMenu {
+    background: #1E293B;
+}
+
+/* Dropdown */
+body.dark .dropdown-content {
+    background: #1E293B;
+}
+body.dark .dropdown-content a {
+    color: #E5E7EB;
+}
+body.dark .dropdown-content a:hover {
+    background: #334155;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===== HEADER ACTIONS (PROFILE + DARK MODE) ===== */
 .header-actions {
     position: absolute;
     right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
 }
+
+/* Profile icon */
+.login {
+    font-size: 22px;
+    color: white;
+    text-decoration: none;
+    padding: 6px;
+}
+
+/* Dark mode button */
+#darkToggle {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: white;
+    transition: transform 0.2s ease;
+}
+
+#darkToggle:hover {
+    transform: scale(1.2);
+}
+
+#darkToggle {
+    background: rgba(255,255,255,0.15);
+    padding: 6px 10px;
+    border-radius: 20px;
+}
+
+
+
+
+
+
+
+
+
+
