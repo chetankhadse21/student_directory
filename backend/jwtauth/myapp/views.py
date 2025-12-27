@@ -16,7 +16,7 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
 class LoginView(generics.GenericAPIView):
-    permission_classes = (AllowAny)
+    permission_classes = (AllowAny,)
     serializer_class = LoginSerializer
 
     def post(self, request, *args, **kwargs):
@@ -26,11 +26,11 @@ class LoginView(generics.GenericAPIView):
 
         if user is not None:
             refresh = RefreshToken.for_user(user)
-            user_serializer = UserSerializer
+            user_serializer = UserSerializer(user)
             return Response ({
                 'refresh':str(refresh),
                 'access':str(refresh.access_token),
-                'user': user_serializer.data,
+                'user': user_serializer.data
             })
         else:
             return Response({'details':'invalide creadite'},status=401)
