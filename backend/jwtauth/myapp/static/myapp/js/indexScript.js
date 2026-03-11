@@ -12,92 +12,52 @@ if (menuToggle && sideMenu && closeMenu) {
   });
 }
 
-
-
-
-
-
-
-
-
 // js for semister option
-
 const btn = document.querySelector(".dropbtn");
 const menu = document.querySelector(".dropdown-content");
 
-btn.addEventListener("click", (event) => {
-  event.stopPropagation(); // prevent closing immediately
-  menu.classList.toggle("show");
-});
+if (btn && menu) {
+    btn.addEventListener("click", (event) => {
+      event.stopPropagation(); // prevent closing immediately
+      menu.classList.toggle("show");
+    });
 
-// Close dropdown when clicking anywhere else
-document.addEventListener("click", () => {
-  menu.classList.remove("show");
-});
-
-
-
-
-
-
-
-
-
+    // Close dropdown when clicking anywhere else
+    document.addEventListener("click", () => {
+      menu.classList.remove("show");
+    });
+}
 
 // js for the cards to display
 const cardContainer = document.getElementById("cardContainer");
+const showBtns = document.querySelectorAll(".show-btn");
 
-document.querySelectorAll(".show-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        const type = btn.getAttribute("data-type");
-        showCards(type);
+if (cardContainer && showBtns.length > 0) {
+    showBtns.forEach(button => {
+        button.addEventListener("click", () => {
+            const type = button.getAttribute("data-type");
+            showCards(type);
+        });
     });
-});
-
-
-
-
-
-
-
-
-
-
+}
 
 // according to the user input 
 let selectedSemester = null;
 
 // JS for semester selection
 const semesterLinks = document.querySelectorAll(".dropdown-content a");
-semesterLinks.forEach((sem, index) => {
-    sem.addEventListener("click", (event) => {
-        event.preventDefault();
-        selectedSemester = index + 1; // Semester 1 → value 1
-        btn.innerText = `Semester ${selectedSemester}`; // show selected sem on button
-        menu.classList.remove("show");
-        cardContainer.innerHTML = ""; // clear cards after semester change
+
+if (semesterLinks.length > 0 && btn && menu && cardContainer) {
+    semesterLinks.forEach((sem, index) => {
+        sem.addEventListener("click", (event) => {
+            event.preventDefault();
+            selectedSemester = index + 1; // Semester 1 → value 1
+            btn.innerText = `Semester ${selectedSemester}`; // show selected sem on button
+            menu.classList.remove("show");
+            cardContainer.innerHTML = ""; // clear cards after semester change
+        });
     });
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 // logic for the files at the assignment , books , and notes option and a download and preview buttton
 // ----------------------
@@ -127,17 +87,16 @@ const fileLinks = {
     }
 };
 
-
-
 // -------------------------
 // UPDATED CARD GENERATOR
 // -------------------------
 function showCards(type) {
-
     if (!selectedSemester) {
         alert("Please select a semester first!");
         return;
     }
+
+    if (!cardContainer) return;
 
     cardContainer.innerHTML = "";
 
@@ -178,67 +137,27 @@ function showCards(type) {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-document.querySelector(".close-note").onclick = () => {
-    document.getElementById("notificationBar").style.display = "none";
-};
-
-
-
-
-
-
-
-function openPage(page) {
-    window.location.href = page;
+const closeNoteBtn = document.querySelector(".close-note");
+if (closeNoteBtn) {
+    closeNoteBtn.onclick = () => {
+        const bar = document.getElementById("notificationBar");
+        if (bar) bar.style.display = "none";
+    };
 }
-
-
-
-
-
 
 // Reusable navigation
 function openPage(page) {
     window.location.href = page;
 }
 
-
-
-
-
-
-
 // ==========================
-// DARK MODE TOGGLE (SINGLE SOURCE)
+// THEME
 // ==========================
 document.addEventListener("DOMContentLoaded", () => {
+    // Load saved theme
     const darkToggle = document.getElementById("darkToggle");
-
     if (!darkToggle) return;
 
-    // Load saved theme
     if (localStorage.getItem("theme") === "dark") {
         document.body.classList.add("dark");
     }
@@ -252,14 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         darkToggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
     });
-    
 });
-
-
-
-
-
-
 
 
 

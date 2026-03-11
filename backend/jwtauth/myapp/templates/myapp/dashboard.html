@@ -46,137 +46,95 @@
     </ul>
 </nav>
 
-<!-- ===== HERO ===== -->
-<section class="hero">
-    <button class="section-btn">Quick Access</button>
+<!-- ===== MAIN CONTENT ===== -->
+<main class="dashboard">
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <button class="section-btn">Quick Access</button>
 
-    <div class="hero-buttons">
-        <button>📘 Semesters</button>
-        <button>📚 Notes</button>
-        <button>📝 Assignments</button>
+        <div class="hero-buttons">
+            <button>📘 Semesters</button>
+            <button>📚 Notes</button>
+            <button>📝 Assignments</button>
+        </div>
+    </section>
+
+    <!-- ===== NOTIFICATION ===== -->
+    <div class="notification-bar" id="notificationBar">
+        <span>📢 Welcome to your dashboard</span>
+        <button class="close-note">✖</button>
     </div>
-</section>
 
-<!-- ===== NOTIFICATION ===== -->
-<div class="notification-bar">
-    <span>📢 Welcome to your dashboard</span>
-    <button class="close-note">✖</button>
-</div>
+    <!-- ===== SNAPSHOT ===== -->
+    <section class="snapshot">
+        <h2>Your Overview</h2>
+        <div class="snapshot-cards">
+            <div class="snap-card">
+                Total Subjects
+                <p>6</p>
+            </div>
+        </div>
+    </section>
 
-<!-- ===== SNAPSHOT ===== -->
-<section class="snapshot">
-    <h2>Your Overview</h2>
-    <div class="snapshot-cards">
-        <div class="snap-card">
-            Total Subjects
-            <p>6</p>
+    <!-- ===== CARDS ===== -->
+    <div class="card-container">
+        <div class="card">
+            <i class='bx bx-book'></i>
+            Notes
+            <div class="btn-group">
+                <a class="preview-btn">View</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <i class='bx bx-edit'></i>
+            Assignments
+            <div class="btn-group">
+                <a class="preview-btn">View</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <i class='bx bx-calendar'></i>
+            Exams
+            <div class="btn-group">
+                <a class="preview-btn">View</a>
+            </div>
         </div>
     </div>
-</section>
 
-<!-- ===== CARDS ===== -->
-<div class="card-container">
-    <div class="card">
-        <i class='bx bx-book'></i>
-        Notes
-        <div class="btn-group">
-            <a class="preview-btn">View</a>
-        </div>
+    <!-- ===== RECENT ===== -->
+    <section class="recent">
+        <h2>Recent Activity</h2>
+        <ul>
+            <li>Math Assignment Uploaded</li>
+            <li>Physics Notes Updated</li>
+            <li>Semester 3 Activated</li>
+        </ul>
+    </section>
+
+    <div class="container">
+      <h2>Attendance Overview</h2>
+      <p class="subtext">Teacher access only</p>
+
+      <div class="months" id="months"></div>
+      <div class="heatmap" id="heatmap"></div>
+
+      <div class="legend">
+        <span>Less</span>
+        <div class="box l0"></div>
+        <div class="box l1"></div>
+        <div class="box l2"></div>
+        <div class="box l3"></div>
+        <div class="box l4"></div>
+        <span>More</span>
+      </div>
     </div>
-
-    <div class="card">
-        <i class='bx bx-edit'></i>
-        Assignments
-        <div class="btn-group">
-            <a class="preview-btn">View</a>
-        </div>
-    </div>
-
-    <div class="card">
-        <i class='bx bx-calendar'></i>
-        Exams
-        <div class="btn-group">
-            <a class="preview-btn">View</a>
-        </div>
-    </div>
-</div>
-
-<!-- ===== RECENT ===== -->
-<section class="recent">
-    <h2>Recent Activity</h2>
-    <ul>
-        <li>Math Assignment Uploaded</li>
-        <li>Physics Notes Updated</li>
-        <li>Semester 3 Activated</li>
-    </ul>
-</section>
-
-
-
-<div class="container">
-  <h2>Attendance Overview</h2>
-  <p class="subtext">Teacher access only</p>
-
-  <div class="months" id="months"></div>
-  <div class="heatmap" id="heatmap"></div>
-
-  <div class="legend">
-    <span>Less</span>
-    <div class="box l0"></div>
-    <div class="box l1"></div>
-    <div class="box l2"></div>
-    <div class="box l3"></div>
-    <div class="box l4"></div>
-    <span>More</span>
-  </div>
-</div>
+</main>
 
 
 
 <!-- ===== BASIC UI JS ===== -->
-<script>
-    // ================================
-    //  JWT Authentication Check
-    // ================================
-    const token = localStorage.getItem("access");
-    const userInfo = document.getElementById("userInfo");
-    const logoutBtn = document.getElementById("logoutBtn");
-    
-    // If no token, redirect to login
-    if (!token) {
-        window.location.href = "/login/";
-    }
-    
-    // Fetch dashboard data from API
-    fetch("/api/dashboard/", {
-        headers: {
-            "Authorization": "Bearer " + token
-        }
-    })
-    .then(res => {
-        if (res.status === 401) {
-            // Token expired or invalid
-            localStorage.clear();
-            window.location.href = "/login/";
-        }
-        return res.json();
-    })
-    .then(data => {
-        userInfo.innerText = `Welcome, ${data.user.username} (${data.user.email})`;
-    })
-    .catch(err => {
-        console.error(err);
-        userInfo.innerText = "Error loading user info";
-    });
-    
-    // ================================
-    //  Logout Functionality
-    // ================================
-    logoutBtn.addEventListener("click", () => {
-        localStorage.clear();
-        window.location.href = "/login/";
-    });
-</script>
 <script src="{% static 'myapp/js/dashboard.js' %}"></script>
 <script src="{% static 'myapp/js/indexScript.js' %}"></script>
 

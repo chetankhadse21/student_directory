@@ -87,6 +87,48 @@
 </main>
 
 <!-- ================= SCRIPT ================= -->
+<script>
+    // ================================
+    //  JWT Authentication Check for Home Map
+    // ================================
+    document.addEventListener("DOMContentLoaded", () => {
+        const token = localStorage.getItem("access");
+        
+        if (token) {
+            fetch("/api/dashboard/", {
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            })
+            .then(res => {
+                if (res.status === 401) {
+                    localStorage.removeItem("access");
+                    localStorage.removeItem("refresh");
+                } else {
+                    // Update login shortcuts dynamically since token is valid
+                    
+                    const sideMenuLinks = document.querySelectorAll("#sideMenu a");
+                    sideMenuLinks.forEach(link => {
+                        if (link.href.includes("login")) {
+                            link.href = "/dashboard/";
+                            link.innerText = "Dashboard";
+                        }
+                    });
+                    
+                    const headerLoginIcon = document.querySelector(".header-actions a.login");
+                    if (headerLoginIcon) {
+                        headerLoginIcon.href = "/dashboard/";
+                        headerLoginIcon.title = "Dashboard";
+                    }
+                }
+            })
+            .catch(err => {
+                console.error("Auth check failed:", err);
+            });
+        }
+    });
+
+</script>
 <script src="{% static 'myapp/js/indexScript.js' %}"></script>
 </body>
 </html>
