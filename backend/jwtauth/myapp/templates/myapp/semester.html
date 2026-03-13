@@ -4,153 +4,307 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'myapp/css/indexStyle.css' %}">
-    <link rel="stylesheet" href="{% static 'myapp/css/semesterStyle.css' %}">
+    <title>Semesters — Student Directory</title>
+    <meta name="description" content="Browse all semesters, teachers, and top students for BE Mechatronics Engineering.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        /* ===== SHARED TOKENS ===== */
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; }
+        body {
+            font-family:'Inter',system-ui,sans-serif;
+            background:#f0eeff;
+            color:#4b4669;
+            min-height:100vh;
+            -webkit-font-smoothing:antialiased;
+        }
+        body::before {
+            content:''; position:fixed; top:-150px; right:-100px;
+            width:460px; height:460px; border-radius:50%;
+            background:radial-gradient(circle,rgba(167,139,250,.17) 0%,transparent 70%);
+            pointer-events:none; z-index:0;
+        }
+        :root {
+            --purple:#7c3aed; --purple-soft:#a78bfa; --purple-pale:#ede9fe; --purple-dark:#5b21b6;
+            --pink:#e879a3; --teal:#14b8a6; --amber:#f59e0b; --blue:#3b82f6; --green:#10b981;
+            --surface:#fff; --border:#e2dff5; --text-dark:#1e1045; --text:#4b4669; --text-muted:#9590b8;
+        }
+        header,nav,main,section,.panel { position:relative; z-index:1; }
 
-    <title>Semister</title>
+        /* ===== SIDEBAR OVERLAY ===== */
+        #sideOverlay { display:none; position:fixed; inset:0; z-index:1999; background:rgba(30,16,69,.35); backdrop-filter:blur(3px); }
+        #sideOverlay.active { display:block; }
+
+        /* ===== HEADER ===== */
+        .header {
+            height:72px; position:sticky; top:0; z-index:3000;
+            display:flex; align-items:center; padding:0 24px; gap:16px;
+            background:rgba(255,255,255,.94); backdrop-filter:blur(20px);
+            border-bottom:1px solid var(--border);
+            box-shadow:0 1px 0 var(--border),0 4px 20px rgba(100,80,200,.07);
+        }
+        .menu-toggle {
+            width:40px; height:40px; background:#f0eeff; border:1px solid var(--border);
+            border-radius:10px; color:var(--text); font-size:20px; cursor:pointer;
+            display:flex; align-items:center; justify-content:center; transition:all .2s; flex-shrink:0;
+        }
+        .menu-toggle:hover { background:var(--purple); border-color:var(--purple); color:#fff; box-shadow:0 4px 14px rgba(124,58,237,.4); }
+        .logo { display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0; }
+        .logo img { height:36px; width:auto; border-radius:8px; filter:drop-shadow(0 2px 8px rgba(124,58,237,.22)); }
+        .logo-text strong { display:block; font-size:15px; font-weight:800; color:var(--text-dark); line-height:1.1; }
+        .logo-text span { font-size:10px; font-weight:500; color:var(--purple-soft); letter-spacing:.08em; text-transform:uppercase; }
+        .header-nav { flex:1; display:flex; justify-content:center; gap:4px; }
+        .header-nav a { padding:7px 14px; border-radius:50px; font-size:13.5px; font-weight:500; color:var(--text); text-decoration:none; transition:all .2s; }
+        .header-nav a:hover,.header-nav a.active { color:var(--purple); background:var(--purple-pale); font-weight:600; }
+        @media(max-width:640px){.header-nav{display:none;}}
+        .header-actions { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+        #darkToggle { width:38px; height:38px; background:#f0eeff; border:1px solid var(--border); border-radius:50%; font-size:15px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+        #darkToggle:hover { border-color:var(--purple-soft); transform:rotate(15deg); }
+        .login-btn {
+            display:inline-flex; align-items:center; gap:7px; padding:8px 18px;
+            background:linear-gradient(135deg,var(--purple) 0%,#9333ea 60%,var(--pink) 100%);
+            border-radius:50px; color:#fff; text-decoration:none; font-size:13px; font-weight:600;
+            box-shadow:0 4px 14px rgba(124,58,237,.35); transition:all .2s;
+        }
+        .login-btn:hover { transform:translateY(-1px); box-shadow:0 6px 22px rgba(124,58,237,.5); }
+
+        /* ===== SIDEBAR ===== */
+        #sideMenu {
+            width:255px; height:100vh; position:fixed; top:0; left:0; z-index:2000;
+            background:#fff; border-right:1px solid var(--border);
+            box-shadow:4px 0 30px rgba(100,80,200,.10);
+            transform:translateX(-265px); transition:transform .3s ease;
+            display:flex; flex-direction:column; overflow-y:auto;
+        }
+        #sideMenu.active { transform:translateX(0); }
+        .sidebar-header { background:linear-gradient(135deg,var(--purple),var(--pink)); padding:20px; display:flex; align-items:center; gap:10px; flex-shrink:0; position:relative; }
+        .sidebar-header-icon { width:36px; height:36px; background:rgba(255,255,255,.2); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; color:#fff; }
+        .sidebar-header-text { font-size:15px; font-weight:700; color:#fff; }
+        .close-btn { position:absolute; top:16px; right:16px; font-size:22px; cursor:pointer; color:rgba(255,255,255,.8); background:none; border:none; line-height:1; }
+        .close-btn:hover { color:#fff; }
+        .sidebar-label { padding:14px 20px 4px; font-size:10px; font-weight:700; letter-spacing:.10em; text-transform:uppercase; color:var(--text-muted); }
+        #sideMenu a { display:flex; align-items:center; gap:11px; padding:11px 20px; color:var(--text); text-decoration:none; font-size:14px; font-weight:500; border-left:3px solid transparent; transition:all .2s; }
+        #sideMenu a i { font-size:18px; color:var(--text-muted); transition:color .2s; }
+        #sideMenu a:hover { color:var(--purple); background:var(--purple-pale); border-left-color:var(--purple); }
+        #sideMenu a:hover i { color:var(--purple); }
+
+        /* ===== MAIN ===== */
+        .page { max-width:1080px; margin:0 auto; padding:36px 20px 80px; display:flex; flex-direction:column; gap:28px; }
+
+        /* ===== PAGE HERO ===== */
+        .page-hero {
+            background:linear-gradient(135deg,var(--purple) 0%,#9333ea 55%,var(--pink) 100%);
+            border-radius:24px; padding:40px 36px; color:#fff;
+            box-shadow:0 12px 40px rgba(124,58,237,.28); position:relative; overflow:hidden;
+        }
+        .page-hero::before { content:''; position:absolute; top:-60px; right:-60px; width:240px; height:240px; border-radius:50%; background:rgba(255,255,255,.07); }
+        .page-hero::after  { content:''; position:absolute; bottom:-60px; left:25%; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,.05); }
+        .hero-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.28); border-radius:50px; padding:4px 12px; font-size:11px; font-weight:600; margin-bottom:12px; }
+        .page-hero h1 { font-size:28px; font-weight:800; line-height:1.25; margin-bottom:8px; position:relative; z-index:1; }
+        .page-hero p  { font-size:14px; opacity:.82; line-height:1.6; max-width:500px; position:relative; z-index:1; }
+
+        /* ===== PANEL ===== */
+        .panel { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:28px; box-shadow:0 2px 12px rgba(100,80,200,.07); }
+        .sec-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+        .sec-head h2 { font-size:16px; font-weight:700; color:var(--text-dark); display:flex; align-items:center; gap:8px; }
+        .sec-head h2::before { content:''; display:inline-block; width:4px; height:18px; background:linear-gradient(to bottom,var(--purple),var(--pink)); border-radius:2px; }
+
+        /* ===== SEMESTER GRID ===== */
+        .sem-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px; }
+        .sem-card {
+            background:#f8f7ff; border:1.5px solid var(--border); border-radius:16px;
+            padding:22px 18px; text-align:center; cursor:pointer; transition:all .2s;
+            text-decoration:none; display:flex; flex-direction:column; align-items:center; gap:10px;
+        }
+        .sem-card:hover { transform:translateY(-4px); box-shadow:0 10px 28px rgba(100,80,200,.14); border-color:var(--purple-soft); }
+        .sem-num {
+            width:52px; height:52px; background:linear-gradient(135deg,var(--purple),var(--pink));
+            border-radius:14px; display:flex; align-items:center; justify-content:center;
+            font-size:22px; font-weight:800; color:#fff; box-shadow:0 4px 14px rgba(124,58,237,.35);
+        }
+        .sem-card strong { font-size:15px; font-weight:700; color:var(--text-dark); }
+        .sem-card span   { font-size:12px; color:var(--text-muted); }
+        .sem-card .sem-tag { font-size:11px; font-weight:600; color:var(--purple); background:var(--purple-pale); padding:3px 10px; border-radius:50px; }
+
+        /* ===== PEOPLE GRID ===== */
+        .people-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; }
+        .person-card {
+            background:#f8f7ff; border:1px solid var(--border); border-radius:16px;
+            padding:22px 18px; display:flex; align-items:center; gap:14px;
+            transition:all .2s;
+        }
+        .person-card:hover { border-color:var(--purple-soft); box-shadow:0 6px 20px rgba(100,80,200,.12); transform:translateY(-2px); }
+        .person-avatar {
+            width:48px; height:48px; border-radius:50%; object-fit:cover;
+            border:2px solid var(--purple-pale); flex-shrink:0;
+            display:flex; align-items:center; justify-content:center;
+            font-size:20px; font-weight:700; color:#fff;
+        }
+        .avatar-initials { background:linear-gradient(135deg,var(--purple),var(--pink)); }
+        .person-info strong { display:block; font-size:14px; font-weight:700; color:var(--text-dark); margin-bottom:2px; }
+        .person-info span   { font-size:12px; color:var(--text-muted); }
+        .person-badge { display:inline-block; font-size:10px; font-weight:600; padding:2px 8px; border-radius:50px; margin-top:4px; }
+        .badge-teacher { background:#dbeafe; color:var(--blue); }
+        .badge-student { background:#d1fae5; color:var(--green); }
+
+        ::-webkit-scrollbar{width:5px;} ::-webkit-scrollbar-track{background:#e8e5f8;} ::-webkit-scrollbar-thumb{background:var(--purple-soft);border-radius:3px;}
+        @media(max-width:640px){.page{padding:20px 14px 60px;gap:20px;} .page-hero{padding:28px 20px;} .page-hero h1{font-size:22px;}}
+    </style>
 </head>
 <body>
-    <!-- HEADER -->
-    <div class="header">
-        
-        <!-- Sidebar Toggle Button -->
-        <button class="menu-toggle" id="menuToggle">☰</button>
-        <!-- Logo -->
-        <a href="index.html" class="logo">
-            <img src="https://i.ibb.co/21KTgLmN/logo1.png" alt="Logo">
-        </a>
-        
-        <!-- Login Button -->
-        <a href="login.html" class="login">
-            <i class='bx bxs-user bx-md'></i>
-        </a>
-         <button id="darkToggle" title="Toggle Dark Mode">🌙</button>
-     
-    </div>
+<div id="sideOverlay"></div>
 
-
-    <!-- SIDEBAR (KEEP OUTSIDE HEADER BUT ATTACHED VISUALLY) -->
-    <nav id="sideMenu" class="side-menu">
-        <button class="close-btn" id="closeMenu">×</button>
-
-        <ul>
-            <li><a href="{% url 'myapp:index' %}">Home</a></li>
-      <li><a href="{% url 'myapp:semester' %}">Semester</a></li>
-      <li><a href="{% url 'myapp:help' %}">Help</a></li> 
-      <li><a href="{% url 'myapp:about' %}">About</a></li>
-      <li><a href="{% url 'myapp:contact' %}">Contact</a></li>
-      <li><a href="{% url 'login' %}">Login</a></li>
-        </ul>
+<!-- HEADER -->
+<header class="header">
+    <button class="menu-toggle" id="menuToggle" aria-label="Open Menu"><i class='bx bx-menu'></i></button>
+    <a href="{% url 'myapp:index' %}" class="logo">
+        <img src="https://i.ibb.co/21KTgLmN/logo1.png" alt="Student Directory">
+        <div class="logo-text"><strong>Student Directory</strong><span>Academic Hub</span></div>
+    </a>
+    <nav class="header-nav">
+        <a href="{% url 'myapp:index' %}">Home</a>
+        <a href="{% url 'myapp:semester' %}" class="active">Semesters</a>
+        <a href="{% url 'myapp:about' %}">About</a>
+        <a href="{% url 'myapp:help' %}">Help</a>
     </nav>
+    <div class="header-actions">
+        <button id="darkToggle">🌙</button>
+        <a href="{% url 'login' %}" class="login-btn"><i class='bx bxs-user'></i><span>Login</span></a>
+    </div>
+</header>
 
+<!-- SIDEBAR -->
+<nav id="sideMenu">
+    <div class="sidebar-header">
+        <div class="sidebar-header-icon"><i class='bx bxs-graduation'></i></div>
+        <span class="sidebar-header-text">Student Directory</span>
+        <button class="close-btn" id="closeMenu">&times;</button>
+    </div>
+    <p class="sidebar-label">Navigation</p>
+    <a href="{% url 'myapp:index' %}"><i class='bx bxs-home'></i> Home</a>
+    <a href="{% url 'myapp:semester' %}"><i class='bx bx-calendar'></i> Semester</a>
+    <a href="{% url 'myapp:about' %}"><i class='bx bx-info-circle'></i> About</a>
+    <a href="{% url 'myapp:contact' %}"><i class='bx bx-envelope'></i> Contact</a>
+    <a href="{% url 'myapp:help' %}"><i class='bx bx-help-circle'></i> Help</a>
+    <a href="{% url 'login' %}"><i class='bx bxs-user'></i> Login</a>
+</nav>
 
+<!-- MAIN -->
+<main class="page">
 
-
-
-
-
-
-
-
-    <div class="container">
-
-    <!-- Top Two Cards -->
-    <div class="card-row">
-
-        <!-- Card 1 -->
-        <div class="card">
-            <h2>shit Teacher</h2>
-
-            <div class="person">
-                <img src="https://i.ibb.co/vx5WhLbW/Screenshot-2026-03-05-131215.png" alt="Teacher">
-                <div class="info">
-                    <h4>Sudhir bhadwa</h4>
-                    <p>ETC</p>
-                </div>
-            </div>
-
-            <div class="person">
-                <img src="Nusar.jpg" alt="Teacher">
-                <div class="info">
-                    <h4>Nusar</h4>
-                    <p>ETC</p>
-                </div>
-            </div>
-
-            <div class="person">
-                <img src="priya.jpg" alt="Teacher">
-                <div class="info">
-                    <h4>Priya</h4>
-                    <p>Subject: Web Tech</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="card">
-            <h2>Top Students</h2>
-
-            <div class="person">
-                <img src="Chetan.jpeg" alt="Student">
-                <div class="info">
-                    <h4>Chetan</h4>
-                    <p>BE Mechatronics</p>
-                </div>
-            </div>
-
-            <div class="person">
-                <img src="student2.jpeg" alt="Student">
-                <div class="info">
-                    <h4>Student 2</h4>
-                    <p>BE Computer</p>
-                </div>
-            </div>
-
-            <div class="person">
-                <img src="https://i.ibb.co/W4g2YVHm/dnyana1.jpg" alt="Student">
-                <div class="info">
-                    <h4>Dnyaneshwari</h4>
-                    <p>BE Computer</p>
-                </div>
-            </div>
-        </div>
-
+    <!-- Hero -->
+    <div class="page-hero">
+        <div class="hero-badge"><i class='bx bx-calendar-alt'></i> 8 Semesters</div>
+        <h1>Semester Overview 📅</h1>
+        <p>Select a semester to browse books, notes, assignments and attendance. Choose from all 8 semesters of the BE Mechatronics program.</p>
     </div>
 
-    <!-- Center Card -->
-    <div class="card-center">
-        <div class="card center">
-            <h2>Top Professors</h2>
+    <!-- Semester Cards -->
+    <div class="panel">
+        <div class="sec-head"><h2>All Semesters</h2></div>
+        <div class="sem-grid">
+            {% for sem in "12345678" %}
+            <a href="{% url 'myapp:index' %}" class="sem-card">
+                <div class="sem-num">{{ sem }}</div>
+                <strong>Semester {{ sem }}</strong>
+                <span>6 Subjects</span>
+                <span class="sem-tag">View Resources</span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
 
-            <div class="person">
-                <img src="Ravi .png" alt="Professor">
-                <div class="info">
-                    <h4>Ravi Sir</h4>
-                    <p>15+ Years Experience</p>
+    <!-- Teachers -->
+    <div class="panel">
+        <div class="sec-head"><h2>Faculty</h2></div>
+        <div class="people-grid">
+            <div class="person-card">
+                <img class="person-avatar" src="https://i.ibb.co/vx5WhLbW/Screenshot-2026-03-05-131215.png" alt="Sudhir Sir" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="person-avatar avatar-initials" style="display:none">S</div>
+                <div class="person-info">
+                    <strong>Sudhir Sir</strong>
+                    <span>ETC Department</span>
+                    <span class="person-badge badge-teacher">Teacher</span>
                 </div>
             </div>
-
-            <div class="person">
-                <img src="Chandu.jpg" alt="Professor">
-                <div class="info">
-                    <h4>Chandu</h4>
-                    <p>Research Specialist</p>
+            <div class="person-card">
+                <div class="person-avatar avatar-initials">N</div>
+                <div class="person-info">
+                    <strong>Nusar Sir</strong>
+                    <span>ETC Department</span>
+                    <span class="person-badge badge-teacher">Teacher</span>
                 </div>
             </div>
-
-            <div class="person">
-                <img src="Kulkarni.jpg" alt="Professor">
-                <div class="info">
-                    <h4>Dr. Kulkarni</h4>
-                    <p>PhD, Data Science</p>
+            <div class="person-card">
+                <div class="person-avatar avatar-initials">P</div>
+                <div class="person-info">
+                    <strong>Priya Ma'am</strong>
+                    <span>Web Technologies</span>
+                    <span class="person-badge badge-teacher">Teacher</span>
+                </div>
+            </div>
+            <div class="person-card">
+                <div class="person-avatar avatar-initials">R</div>
+                <div class="person-info">
+                    <strong>Ravi Sir</strong>
+                    <span>15+ Years Experience</span>
+                    <span class="person-badge badge-teacher">Professor</span>
+                </div>
+            </div>
+            <div class="person-card">
+                <div class="person-avatar avatar-initials">C</div>
+                <div class="person-info">
+                    <strong>Chandu Sir</strong>
+                    <span>Research Specialist</span>
+                    <span class="person-badge badge-teacher">Professor</span>
+                </div>
+            </div>
+            <div class="person-card">
+                <div class="person-avatar avatar-initials">K</div>
+                <div class="person-info">
+                    <strong>Dr. Kulkarni</strong>
+                    <span>PhD, Data Science</span>
+                    <span class="person-badge badge-teacher">Professor</span>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Top Students -->
+    <div class="panel">
+        <div class="sec-head"><h2>Top Students</h2></div>
+        <div class="people-grid">
+            <div class="person-card">
+                <img class="person-avatar" src="https://i.ibb.co/W4g2YVHm/dnyana1.jpg" alt="Dnyaneshwari" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="person-avatar avatar-initials" style="display:none">D</div>
+                <div class="person-info">
+                    <strong>Dnyaneshwari</strong>
+                    <span>BE Computer</span>
+                    <span class="person-badge badge-student">Top Student</span>
+                </div>
+            </div>
+            <div class="person-card">
+                <div class="person-avatar avatar-initials">C</div>
+                <div class="person-info">
+                    <strong>Chetan Khadse</strong>
+                    <span>BE Mechatronics</span>
+                    <span class="person-badge badge-student">Top Student</span>
+                </div>
+            </div>
+            <div class="person-card">
+                <div class="person-avatar avatar-initials">S</div>
+                <div class="person-info">
+                    <strong>Sumit Shinde</strong>
+                    <span>BE Mechatronics</span>
+                    <span class="person-badge badge-student">Top Student</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
+</main>
 
-
-    <script src="{% static 'myapp/js/indexScript.js' %}"></script>
+<script src="{% static 'myapp/js/indexScript.js' %}"></script>
 </body>
 </html>

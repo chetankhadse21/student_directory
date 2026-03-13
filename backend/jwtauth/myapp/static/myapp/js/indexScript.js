@@ -1,68 +1,98 @@
+/* ================================================
+   indexScript.js — Premium UI Interactions
+================================================= */
+
+// =====================
+// SIDEBAR
+// =====================
 const menuToggle = document.getElementById("menuToggle");
-const sideMenu = document.getElementById("sideMenu");
-const closeMenu = document.getElementById("closeMenu");
+const sideMenu   = document.getElementById("sideMenu");
+const closeMenu  = document.getElementById("closeMenu");
+const overlay    = document.getElementById("sideOverlay");
 
-if (menuToggle && sideMenu && closeMenu) {
-  menuToggle.addEventListener("click", () => {
-      sideMenu.style.transform = "translateX(0)";
-  });
-
-  closeMenu.addEventListener("click", () => {
-      sideMenu.style.transform = "translateX(-250px)";
-  });
+function openSidebar() {
+    if (!sideMenu) return;
+    sideMenu.classList.add("active");
+    if (overlay) overlay.classList.add("active");
+    document.body.style.overflow = "hidden";
 }
 
-// js for semister option
-const btn = document.querySelector(".dropbtn");
-const menu = document.querySelector(".dropdown-content");
+function closeSidebar() {
+    if (!sideMenu) return;
+    sideMenu.classList.remove("active");
+    if (overlay) overlay.classList.remove("active");
+    document.body.style.overflow = "";
+}
 
-if (btn && menu) {
-    btn.addEventListener("click", (event) => {
-      event.stopPropagation(); // prevent closing immediately
-      menu.classList.toggle("show");
+if (menuToggle) menuToggle.addEventListener("click", openSidebar);
+if (closeMenu)  closeMenu.addEventListener("click", closeSidebar);
+if (overlay)    overlay.addEventListener("click", closeSidebar);
+
+
+// =====================
+// SEMESTER DROPDOWN
+// =====================
+const dropBtn  = document.querySelector(".dropbtn");
+const dropMenu = document.querySelector(".dropdown-content");
+
+if (dropBtn && dropMenu) {
+    const chevron = dropBtn.querySelector(".bx-chevron-down");
+
+    dropBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isOpen = dropMenu.classList.toggle("show");
+        if (chevron) chevron.style.transform = isOpen ? "rotate(180deg)" : "";
     });
 
-    // Close dropdown when clicking anywhere else
     document.addEventListener("click", () => {
-      menu.classList.remove("show");
+        dropMenu.classList.remove("show");
+        if (chevron) chevron.style.transform = "";
     });
 }
 
-// js for the cards to display
-const cardContainer = document.getElementById("cardContainer");
+
+// =====================
+// SEMESTER SELECTION
+// =====================
+let selectedSemester = null;
+const semesterLinks  = document.querySelectorAll(".dropdown-content a");
+const cardContainer  = document.getElementById("cardContainer");
+
+if (semesterLinks.length > 0 && dropBtn) {
+    semesterLinks.forEach((link, index) => {
+        link.addEventListener("click", (e) => {
+            e.preventDefault();
+            selectedSemester = index + 1;
+            dropBtn.childNodes[2].textContent = `Semester ${selectedSemester} `;
+            dropMenu.classList.remove("show");
+            if (cardContainer) cardContainer.innerHTML = "";
+            // Reset active category button
+            document.querySelectorAll(".show-btn").forEach(b => b.classList.remove("active"));
+        });
+    });
+}
+
+
+// =====================
+// CATEGORY BUTTONS
+// =====================
 const showBtns = document.querySelectorAll(".show-btn");
 
-if (cardContainer && showBtns.length > 0) {
+if (showBtns.length > 0) {
     showBtns.forEach(button => {
         button.addEventListener("click", () => {
+            showBtns.forEach(b => b.classList.remove("active"));
+            button.classList.add("active");
             const type = button.getAttribute("data-type");
             showCards(type);
         });
     });
 }
 
-// according to the user input 
-let selectedSemester = null;
 
-// JS for semester selection
-const semesterLinks = document.querySelectorAll(".dropdown-content a");
-
-if (semesterLinks.length > 0 && btn && menu && cardContainer) {
-    semesterLinks.forEach((sem, index) => {
-        sem.addEventListener("click", (event) => {
-            event.preventDefault();
-            selectedSemester = index + 1; // Semester 1 → value 1
-            btn.innerText = `Semester ${selectedSemester}`; // show selected sem on button
-            menu.classList.remove("show");
-            cardContainer.innerHTML = ""; // clear cards after semester change
-        });
-    });
-}
-
-// logic for the files at the assignment , books , and notes option and a download and preview buttton
-// ----------------------
-// GOFILE LINKS MAPPING
-// ----------------------
+// =====================
+// GOFILE LINKS
+// =====================
 const fileLinks = {
     books: {
         1: "https://gofile.io/d/q0tK3p",
@@ -87,92 +117,114 @@ const fileLinks = {
     }
 };
 
-// -------------------------
-// UPDATED CARD GENERATOR
-// -------------------------
+const typeIcons = {
+    books:       "bx-book-open",
+    assignments: "bx-edit-alt",
+    notes:       "bx-note",
+    attendance:  "bx-check-circle"
+};
+
 function showCards(type) {
     if (!selectedSemester) {
-        alert("Please select a semester first!");
+        // Shake the semester button to hint
+        if (dropBtn) {
+            dropBtn.style.animation = "none";
+            dropBtn.style.borderColor = "var(--accent-pink)";
+            dropBtn.style.boxShadow    = "0 0 20px rgba(236,72,153,0.5)";
+            setTimeout(() => {
+                dropBtn.style.borderColor = "";
+                dropBtn.style.boxShadow   = "";
+            }, 1200);
+        }
         return;
     }
 
     if (!cardContainer) return;
-
     cardContainer.innerHTML = "";
 
-    let title = "";
-    let count = 5;
-
-    if (type === "books") title = "Book";
-    else if (type === "assignments") title = "Assignment";
-    else if (type === "notes") title = "Note";
-    else if (type === "attendance") {
-        title = "Attendance";
-        count = 1;
-    } 
-    else title = "Item";
+    const label  = type.charAt(0).toUpperCase() + type.slice(0, -1);  // e.g. "Book"
+    const icon   = typeIcons[type] || "bx-file";
+    const count  = type === "attendance" ? 1 : 5;
 
     for (let i = 1; i <= count; i++) {
         const card = document.createElement("div");
         card.className = "card";
+        card.style.animationDelay = `${(i - 1) * 50}ms`;
 
         if (type === "attendance") {
-            card.innerText = `${title} (Sem ${selectedSemester})`;
+            card.innerHTML = `
+                <i class='bx ${icon}'></i>
+                <h3>Attendance</h3>
+                <p>Semester ${selectedSemester}</p>
+                <div class="btn-group">
+                    <a class="preview-btn" href="#"><i class='bx bx-show'></i> View</a>
+                </div>
+            `;
         } else {
             const fileUrl = fileLinks[type]?.[i] || "#";
-
             card.innerHTML = `
-                <i class='bx bx-file'></i>
-                <h3>${title} ${i}</h3>
+                <i class='bx ${icon}'></i>
+                <h3>${label} ${i}</h3>
                 <p>Semester ${selectedSemester}</p>
-
                 <div class="btn-group">
-                    <a class="preview-btn" href="${fileUrl}" target="_blank">Preview</a>
-                    <a class="download-btn" href="${fileUrl}" download>Download</a>
+                    <a class="preview-btn" href="${fileUrl}" target="_blank" rel="noopener">
+                        <i class='bx bx-show'></i> Preview
+                    </a>
+                    <a class="download-btn" href="${fileUrl}" download>
+                        <i class='bx bx-download'></i> Save
+                    </a>
                 </div>
             `;
         }
 
+        // Animate card in
+        card.style.opacity = "0";
+        card.style.transform = "translateY(12px)";
         cardContainer.appendChild(card);
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                card.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+                card.style.opacity = "1";
+                card.style.transform = "translateY(0)";
+            }, (i - 1) * 55);
+        });
     }
 }
 
+
+// =====================
+// NOTIFICATION DISMISS
+// =====================
 const closeNoteBtn = document.querySelector(".close-note");
 if (closeNoteBtn) {
     closeNoteBtn.onclick = () => {
         const bar = document.getElementById("notificationBar");
-        if (bar) bar.style.display = "none";
+        if (bar) {
+            bar.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+            bar.style.opacity    = "0";
+            bar.style.transform  = "translateY(-8px)";
+            setTimeout(() => (bar.style.display = "none"), 300);
+        }
     };
 }
 
-// Reusable navigation
-function openPage(page) {
-    window.location.href = page;
-}
 
-// ==========================
-// THEME
-// ==========================
+// =====================
+// THEME TOGGLE
+// =====================
 document.addEventListener("DOMContentLoaded", () => {
-    // Load saved theme
     const darkToggle = document.getElementById("darkToggle");
     if (!darkToggle) return;
 
     if (localStorage.getItem("theme") === "dark") {
         document.body.classList.add("dark");
+        darkToggle.textContent = "☀️";
     }
 
     darkToggle.addEventListener("click", () => {
         document.body.classList.toggle("dark");
-
-        localStorage.setItem(
-            "theme",
-            document.body.classList.contains("dark") ? "dark" : "light"
-        );
-        darkToggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+        const isDark = document.body.classList.contains("dark");
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+        darkToggle.textContent = isDark ? "☀️" : "🌙";
     });
 });
-
-
-
-

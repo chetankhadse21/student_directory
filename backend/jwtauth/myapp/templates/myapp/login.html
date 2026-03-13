@@ -2,165 +2,257 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Students management Application</title>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="{% static 'myapp/css/styles.css' %}">
-    <!-- <link rel="stylesheet" href="css/indexStyle.css"> -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login · Student Management</title>
+  <meta name="description" content="Sign in or create an account on the Student Management Application.">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'myapp/css/styles.css' %}">
 </head>
 <body>
 
-        <!-- Main Content / Header -->
-    <div class="header">
-        <img src="logo1.png" class="logo" alt="Logo">
-    </div>
+  <!-- Animated background extras -->
+  <div class="orb"></div>
 
-    <!-- Button to open sidebar -->
-        <button class="menu-toggle" id="menuToggle">☰</button>
-      
+  <!-- Header -->
+  <div class="header">
+    <img src="logo1.png" class="logo" alt="Logo" onerror="this.style.display='none'">
+  </div>
 
-    <!-- Sidebar -->
-    <nav id="sideMenu" class="side-menu">
-    <button class="close-btn" id="closeMenu">×</button>
+  <!-- Menu Toggle -->
+  <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+
+  <!-- Sidebar -->
+  <nav id="sideMenu" class="side-menu" aria-label="Navigation">
+    <button class="close-btn" id="closeMenu" aria-label="Close menu">×</button>
     <ul>
-      <li><a href="{% url 'myapp:index' %}">Home</a></li>
-      <li><a href="{% url 'myapp:semester' %}">Semester</a></li>
-      <li><a href="{% url 'myapp:help' %}">Help</a></li> 
-      <li><a href="{% url 'myapp:about' %}">About</a></li>
-      <li><a href="{% url 'myapp:contact' %}">Contact</a></li>
-      <li><a href="{% url 'login' %}">Login</a></li>
+      <li><a href="{% url 'myapp:index' %}"><i class='bx bx-home-alt'></i> Home</a></li>
+      <li><a href="{% url 'myapp:semester' %}"><i class='bx bx-book-open'></i> Semester</a></li>
+      <li><a href="{% url 'myapp:help' %}"><i class='bx bx-help-circle'></i> Help</a></li>
+      <li><a href="{% url 'myapp:about' %}"><i class='bx bx-info-circle'></i> About</a></li>
+      <li><a href="{% url 'myapp:contact' %}"><i class='bx bx-envelope'></i> Contact</a></li>
+      <li><a href="{% url 'login' %}"><i class='bx bx-log-in'></i> Login</a></li>
     </ul>
   </nav>
 
-    <div class="container">
-        <div class="form-box login">
-            <form id="loginForm">
-    <h1>Login</h1>
+  <!-- Main Login / Register Card -->
+  <div class="container" id="mainContainer">
 
-    <div class="input-box">
-        <input type="text" id="loginUsername" placeholder="Username" required>
-        <i class='bx bxs-user'></i>
-    </div>
+    <!-- LOGIN FORM -->
+    <div class="form-box login">
+      <form id="loginForm" novalidate>
+        <h1>Welcome Back</h1>
 
-    <div class="input-box">
-        <input type="password" id="loginPassword" placeholder="Password" required>
-        <i class='bx bxs-lock-alt'></i>
-    </div>
-
-    <div class="forgot-link">
-        <a href="#">Forgot password</a>
-    </div>
-                <button onclick="login()" type="submit" class="btn">Login</button>
-                <p>or login with social platforms</p>
-                <div class="social-icon">
-                    <a href="#"><i class='bx bxl-google' ></i></a>
-                    <a href="#"><i class='bx bxl-facebook' ></i></a>
-                    <a href="#"><i class='bx bxl-linkedin' ></i></a>
-                    <a href="#"><i class='bx bxl-github' ></i></a>
-                </div>
-            </form>
+        <div class="input-box">
+          <input type="text" id="loginUsername" placeholder="Username" autocomplete="username" required>
+          <i class='bx bxs-user'></i>
         </div>
-        <div class="form-box register">
-            <form id="registerForm">
-    <h1>Registration</h1>
 
-    <div class="input-box">
-        <input type="text" id="regUsername" placeholder="Username" required>
-        <i class='bx bxs-user'></i>
-    </div>
-
-    <div class="input-box">
-        <input type="email" id="regEmail" placeholder="Email" required>
-        <i class='bx bx-envelope'></i>
-    </div>
-
-    <div class="input-box">
-        <input type="password" id="regPassword" placeholder="Password" required>
-        <i class='bx bxs-lock-alt'></i>
-    </div>
-
-    <button type="submit" class="btn">Register</button>
-                <p>or register with social platforms</p>
-                <div class="social-icon">
-                    <a href="#"><i class='bx bxl-google' ></i></a>
-                    <a href="#"><i class='bx bxl-facebook' ></i></a>
-                    <a href="#"><i class='bx bxl-linkedin' ></i></a>
-                    <a href="#"><i class='bx bxl-github' ></i></a>
-                </div>
-            </form>
+        <div class="input-box">
+          <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password" required>
+          <i class='bx bxs-lock-alt'></i>
         </div>
-        <div class="toggel-box">
-            <div class="toggel-panel toggel-left">
-                <h1>Hello,welcome</h1>
-                <p>Don't have account?</p>
-                <button class="btn register-btn">Register</button>
-            </div>
-            <div class="toggel-panel toggel-right">
-                <h1>welcome Back!</h1>
-                <p>Already have an account?</p>
-                <button class="btn login-btn">Login</button>
-            </div>
+
+        <div class="forgot-link">
+          <a href="#">Forgot password?</a>
         </div>
+
+        <button type="submit" class="btn" id="loginBtn">
+          <span>Sign In</span>
+        </button>
+
+        <p>or continue with</p>
+
+        <div class="social-icon">
+          <a href="#" aria-label="Google"><i class='bx bxl-google'></i></a>
+          <a href="#" aria-label="Facebook"><i class='bx bxl-facebook'></i></a>
+          <a href="#" aria-label="LinkedIn"><i class='bx bxl-linkedin'></i></a>
+          <a href="#" aria-label="GitHub"><i class='bx bxl-github'></i></a>
+        </div>
+      </form>
     </div>
-<script src="{% static 'myapp/js/login.js' %}"></script>
-<script>
 
-// LOGIN
-document.getElementById("loginForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
+    <!-- REGISTER FORM -->
+    <div class="form-box register">
+      <form id="registerForm" novalidate>
+        <h1>Create Account</h1>
 
-    const username = document.getElementById("loginUsername").value;
-    const password = document.getElementById("loginPassword").value;
+        <div class="input-box">
+          <input type="text" id="regUsername" placeholder="Username" autocomplete="username" required>
+          <i class='bx bxs-user'></i>
+        </div>
 
-    const response = await fetch("/api/auth/login/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ username, password })
+        <div class="input-box">
+          <input type="email" id="regEmail" placeholder="Email" autocomplete="email" required>
+          <i class='bx bx-envelope'></i>
+        </div>
+
+        <div class="input-box">
+          <input type="password" id="regPassword" placeholder="Password" autocomplete="new-password" required>
+          <i class='bx bxs-lock-alt'></i>
+        </div>
+
+        <button type="submit" class="btn" id="registerBtn">
+          <span>Create Account</span>
+        </button>
+
+        <p>or register with</p>
+
+        <div class="social-icon">
+          <a href="#" aria-label="Google"><i class='bx bxl-google'></i></a>
+          <a href="#" aria-label="Facebook"><i class='bx bxl-facebook'></i></a>
+          <a href="#" aria-label="LinkedIn"><i class='bx bxl-linkedin'></i></a>
+          <a href="#" aria-label="GitHub"><i class='bx bxl-github'></i></a>
+        </div>
+      </form>
+    </div>
+
+    <!-- TOGGLE PANELS -->
+    <div class="toggel-box">
+      <div class="toggel-panel toggel-left">
+        <h1>Hello, Welcome! 👋</h1>
+        <p>Don't have an account yet?</p>
+        <button class="btn register-btn">Register Now</button>
+      </div>
+      <div class="toggel-panel toggel-right">
+        <h1>Welcome Back! 🎓</h1>
+        <p>Already have an account?</p>
+        <button class="btn login-btn">Sign In</button>
+      </div>
+    </div>
+  </div><!-- /.container -->
+
+  <!-- Scripts -->
+  <script src="{% static 'myapp/js/login.js' %}"></script>
+  <script>
+    /* ===== ANIMATED PARTICLES ===== */
+    (function spawnParticles() {
+      const colors = ['#7c3aed','#9f67fa','#f472b6','#38bdf8','#a78bfa'];
+      for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = Math.random() * 6 + 3;
+        p.style.cssText = `
+          width:${size}px; height:${size}px;
+          left:${Math.random()*100}vw;
+          bottom:-${size}px;
+          background:${colors[Math.floor(Math.random()*colors.length)]};
+          animation-duration:${Math.random()*12+8}s;
+          animation-delay:${Math.random()*10}s;
+        `;
+        document.body.appendChild(p);
+      }
+    })();
+
+    /* ===== RIPPLE EFFECT ON BUTTONS ===== */
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const rect = this.getBoundingClientRect();
+        const r = document.createElement('span');
+        r.className = 'ripple';
+        const size = Math.max(rect.width, rect.height);
+        r.style.cssText = `
+          width:${size}px; height:${size}px;
+          left:${e.clientX - rect.left - size/2}px;
+          top:${e.clientY - rect.top - size/2}px;
+        `;
+        this.appendChild(r);
+        setTimeout(() => r.remove(), 700);
+      });
     });
 
-    const data = await response.json();
+    /* ===== LOGIN ===== */
+    document.getElementById("loginForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('loginBtn');
+      const username = document.getElementById("loginUsername").value.trim();
+      const password = document.getElementById("loginPassword").value;
 
-    if (response.ok) {
-        localStorage.setItem("access", data.access);
-        localStorage.setItem("refresh", data.refresh);
+      btn.classList.add('loading');
+      btn.querySelector('span').style.opacity = '0';
 
-        alert("Login successful");
-        window.location.href = "/dashboard/";
-    } else {
-        alert(data.detail || "Invalid credentials");
-    }
-});
-
-
-// REGISTER
-document.getElementById("registerForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    const username = document.getElementById("regUsername").value;
-    const email = document.getElementById("regEmail").value;
-    const password = document.getElementById("regPassword").value;
-
-    const response = await fetch("/api/auth/register/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ username, email, password })
+      try {
+        const response = await fetch("/api/auth/login/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await response.json();
+        if (response.ok) {
+          localStorage.setItem("access", data.access);
+          localStorage.setItem("refresh", data.refresh);
+          window.location.href = "/dashboard/";
+        } else {
+          showToast(data.detail || "Invalid credentials", "error");
+        }
+      } catch(err) {
+        showToast("Network error. Please try again.", "error");
+      } finally {
+        btn.classList.remove('loading');
+        btn.querySelector('span').style.opacity = '1';
+      }
     });
 
-    const data = await response.json();
+    /* ===== REGISTER ===== */
+    document.getElementById("registerForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('registerBtn');
+      const username = document.getElementById("regUsername").value.trim();
+      const email    = document.getElementById("regEmail").value.trim();
+      const password = document.getElementById("regPassword").value;
 
-    if (response.ok) {
-        alert("Registration successful");
-    } else {
-        alert(JSON.stringify(data));
+      btn.classList.add('loading');
+      btn.querySelector('span').style.opacity = '0';
+
+      try {
+        const response = await fetch("/api/auth/register/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, email, password })
+        });
+        const data = await response.json();
+        if (response.ok) {
+          showToast("Account created! Please sign in.", "success");
+          document.getElementById('mainContainer').classList.remove('active');
+        } else {
+          showToast(JSON.stringify(data), "error");
+        }
+      } catch(err) {
+        showToast("Network error. Please try again.", "error");
+      } finally {
+        btn.classList.remove('loading');
+        btn.querySelector('span').style.opacity = '1';
+      }
+    });
+
+    /* ===== TOAST NOTIFICATIONS ===== */
+    function showToast(msg, type = 'info') {
+      const existing = document.querySelector('.toast');
+      if (existing) existing.remove();
+
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.textContent = msg;
+      t.style.cssText = `
+        position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(20px);
+        padding:14px 28px; border-radius:12px; font-family:Inter,sans-serif;
+        font-size:14px; font-weight:500; color:#fff; z-index:9999;
+        box-shadow:0 8px 32px rgba(0,0,0,0.35);
+        background:${type==='success'?'linear-gradient(135deg,#059669,#10b981)':type==='error'?'linear-gradient(135deg,#dc2626,#ef4444)':'linear-gradient(135deg,#7c3aed,#9f67fa)'};
+        opacity:0; transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
+        max-width:90vw; text-align:center;
+      `;
+      document.body.appendChild(t);
+      requestAnimationFrame(() => {
+        t.style.opacity = '1';
+        t.style.transform = 'translateX(-50%) translateY(0)';
+      });
+      setTimeout(() => {
+        t.style.opacity = '0';
+        t.style.transform = 'translateX(-50%) translateY(20px)';
+        setTimeout(() => t.remove(), 400);
+      }, 3500);
     }
-});
-
-
-</script>
+  </script>
 </body>
 </html>

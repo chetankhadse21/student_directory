@@ -4,130 +4,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Directory</title>
-
-    <!-- Icons -->
+    <title>Student Directory — Your Study Hub</title>
+    <meta name="description" content="Access semester books, notes, assignments and attendance all in one place.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-
-    <!-- Styles -->
-    <link rel="stylesheet" href="{% static 'myapp/indexStyle.css' %}">
-    <link rel="stylesheet" href="{% static 'myapp/css/styles.css' %}"> 
+    <link rel="stylesheet" href="{% static 'myapp/css/indexStyle.css' %}">
 </head>
 <body>
 
-<!-- ================= HEADER ================= -->
+<div id="sideOverlay"></div>
+
+<!-- ===== HEADER ===== -->
 <header class="header">
-    <button class="menu-toggle" id="menuToggle" aria-label="Open Menu">☰</button>
-    
+    <button class="menu-toggle" id="menuToggle" aria-label="Open Menu">
+        <i class='bx bx-menu'></i>
+    </button>
+
+    <!-- Brand logo -->
     <a href="{% url 'myapp:index' %}" class="logo">
         <img src="https://i.ibb.co/21KTgLmN/logo1.png" alt="Student Directory Logo">
+        <div class="logo-text">
+            <strong>Student Directory</strong>
+            <span>Academic Hub</span>
+        </div>
     </a>
-    
+
+    <!-- Center nav (desktop only) -->
+    <nav class="header-nav" aria-label="Main Navigation">
+        <a href="{% url 'myapp:index' %}" class="active">Home</a>
+        <a href="{% url 'myapp:semester' %}">Semesters</a>
+        <a href="{% url 'myapp:about' %}">About</a>
+        <a href="{% url 'myapp:help' %}">Help</a>
+    </nav>
+
+    <!-- Actions -->
     <div class="header-actions">
-        <a href="{% url 'login' %}" class="login" title="Login">
-            <i class='bx bxs-user bx-md'></i>
+        <button id="darkToggle" title="Toggle Theme">🌙</button>
+        <a href="{% url 'login' %}" class="login" id="headerLoginBtn">
+            <i class='bx bxs-user'></i>
+            <span class="login-label">Login</span>
         </a>
-        <button id="darkToggle" title="Toggle Dark Mode">🌙</button>
     </div>
 </header>
 
-<!-- ================= SIDEBAR ================= -->
-<nav id="sideMenu" class="side-menu" aria-label="Sidebar Navigation">
-    <button class="close-btn" id="closeMenu">×</button>
-    
+<!-- ===== SIDEBAR ===== -->
+<nav id="sideMenu" aria-label="Sidebar Navigation">
+    <div class="sidebar-brand">
+        <div class="sidebar-brand-icon"><i class='bx bxs-graduation'></i></div>
+        <span class="sidebar-brand-text">Student Directory</span>
+    </div>
+    <button class="close-btn" id="closeMenu" aria-label="Close">&times;</button>
+
+    <p class="sidebar-section-label">Navigation</p>
     <ul>
-        <li><a href="{% url 'myapp:index' %}">Home</a></li>
-        <li><a href="{% url 'myapp:semester' %}">Semester</a></li>
-        <li><a href="{% url 'myapp:help' %}">Help</a></li>
-        <li><a href="{% url 'myapp:about' %}">About</a></li>
-        <li><a href="{% url 'myapp:contact' %}">Contact</a></li>
-        <li><a href="{% url 'login' %}">Login</a></li>
+        <li><a href="{% url 'myapp:index' %}"><i class='bx bxs-home'></i> Home</a></li>
+        <li><a href="{% url 'myapp:semester' %}"><i class='bx bx-calendar'></i> Semester</a></li>
+        <li><a href="{% url 'myapp:about' %}"><i class='bx bx-info-circle'></i> About</a></li>
+        <li><a href="{% url 'myapp:contact' %}"><i class='bx bx-envelope'></i> Contact</a></li>
+        <li><a href="{% url 'myapp:help' %}"><i class='bx bx-help-circle'></i> Help</a></li>
+    </ul>
+
+    <p class="sidebar-section-label">Account</p>
+    <ul>
+        <li><a href="{% url 'login' %}" id="sideLoginLink"><i class='bx bxs-user'></i> Login</a></li>
     </ul>
 </nav>
 
-<!-- ================= MAIN CONTENT ================= -->
+<!-- ===== MAIN CONTENT ===== -->
 <main class="dashboard">
 
-    <!-- Semester Dropdown -->
-    <section class="top-center">
-        <div class="dropdown">
-            <button class="dropbtn" id="semesterBtn">
-                Semester
-                <i class='bx bx-chevron-down'></i>
-            </button>
+    <!-- HERO BANNER -->
+    <section class="home-hero">
+        <div class="home-hero-badge">
+            <i class='bx bxs-graduation'></i> Academic Year 2024–25
+        </div>
+        <h1>Your Complete<br>Study Resource Hub 📚</h1>
+        <p>Access notes, assignments, books, and attendance records for every semester — all organised in one place.</p>
+        <div class="home-hero-actions">
+            <a href="{% url 'myapp:semester' %}" class="hero-cta solid">
+                <i class='bx bx-book-open'></i> Browse Semesters
+            </a>
+            <a href="{% url 'login' %}" class="hero-cta outline" id="heroLoginBtn">
+                <i class='bx bxs-user'></i> Login to Dashboard
+            </a>
+        </div>
+    </section>
 
-            <div class="dropdown-content" id="semesterMenu">
-                <a href="#" data-sem="1">Semester 1</a>
-                <a href="#" data-sem="2">Semester 2</a>
-                <a href="#" data-sem="3">Semester 3</a>
-                <a href="#" data-sem="4">Semester 4</a>
-                <a href="#" data-sem="5">Semester 5</a>
-                <a href="#" data-sem="6">Semester 6</a>
-                <a href="#" data-sem="7">Semester 7</a>
-                <a href="#" data-sem="8">Semester 8</a>
+    <!-- QUICK STATS -->
+    <section>
+        <div class="section-heading">
+            <h2>At a Glance</h2>
+        </div>
+        <div class="stats-row">
+            <div class="stat-tile">
+                <div class="stat-tile-icon st-purple"><i class='bx bx-book'></i></div>
+                <div class="stat-tile-value">8</div>
+                <div class="stat-tile-label">Semesters</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-tile-icon st-pink"><i class='bx bx-edit-alt'></i></div>
+                <div class="stat-tile-value">40+</div>
+                <div class="stat-tile-label">Assignments</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-tile-icon st-teal"><i class='bx bx-note'></i></div>
+                <div class="stat-tile-value">200+</div>
+                <div class="stat-tile-label">Notes &amp; PDFs</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-tile-icon st-amber"><i class='bx bx-group'></i></div>
+                <div class="stat-tile-value">6</div>
+                <div class="stat-tile-label">Subjects / Sem</div>
             </div>
         </div>
     </section>
 
-    <!-- Category Buttons -->
-    <section class="main-buttons">
-        <button class="show-btn" data-type="books">📚 Books</button>
-        <button class="show-btn" data-type="assignments">📝 Assignments</button>
-        <button class="show-btn" data-type="notes">📖 Notes</button>
-        <button class="show-btn" data-type="attendance">✅ Attendance</button>
+    <!-- SEMESTER PICKER -->
+    <section>
+        <div class="section-heading">
+            <h2>Browse Resources</h2>
+            <a href="{% url 'myapp:semester' %}">View all semesters →</a>
+        </div>
+
+        <div class="top-center" style="margin-bottom:18px;">
+            <div class="dropdown">
+                <button class="dropbtn" id="semesterBtn">
+                    <i class='bx bx-calendar-alt'></i>
+                    Select Semester
+                    <i class='bx bx-chevron-down'></i>
+                </button>
+                <div class="dropdown-content" id="semesterMenu">
+                    <a href="#" data-sem="1">Semester 1</a>
+                    <a href="#" data-sem="2">Semester 2</a>
+                    <a href="#" data-sem="3">Semester 3</a>
+                    <a href="#" data-sem="4">Semester 4</a>
+                    <a href="#" data-sem="5">Semester 5</a>
+                    <a href="#" data-sem="6">Semester 6</a>
+                    <a href="#" data-sem="7">Semester 7</a>
+                    <a href="#" data-sem="8">Semester 8</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-buttons" style="margin-bottom:22px;">
+            <button class="show-btn" data-type="books">
+                <i class='bx bx-book-open'></i><span>Books</span>
+            </button>
+            <button class="show-btn" data-type="assignments">
+                <i class='bx bx-edit-alt'></i><span>Assignments</span>
+            </button>
+            <button class="show-btn" data-type="notes">
+                <i class='bx bx-note'></i><span>Notes</span>
+            </button>
+            <button class="show-btn" data-type="attendance">
+                <i class='bx bx-check-circle'></i><span>Attendance</span>
+            </button>
+        </div>
+
+        <div id="cardContainer" class="card-container"></div>
     </section>
 
-    <!-- Cards Output -->
-    <section class="content-area">
-        <div id="cardContainer" class="card-container">
-            <!-- Cards injected by JS -->
+    <!-- FEATURES GRID -->
+    <section>
+        <div class="section-heading">
+            <h2>What's Inside</h2>
         </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon fi-purple"><i class='bx bx-book-open'></i></div>
+                <h3>Books &amp; PDFs</h3>
+                <p>Download textbooks and reference PDFs organised by semester and subject.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon fi-pink"><i class='bx bx-edit-alt'></i></div>
+                <h3>Assignments</h3>
+                <p>Find all assignments with preview and direct download links in one click.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon fi-teal"><i class='bx bx-note'></i></div>
+                <h3>Lecture Notes</h3>
+                <p>Handwritten and typed notes uploaded by toppers — semester wise.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon fi-amber"><i class='bx bx-check-circle'></i></div>
+                <h3>Attendance</h3>
+                <p>Quick overview of your attendance with a GitHub-style heatmap view.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon fi-blue"><i class='bx bx-calendar'></i></div>
+                <h3>Exam Schedule</h3>
+                <p>Stay on top of your exam timetable with semester-specific exam dates.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon fi-green"><i class='bx bx-trending-up'></i></div>
+                <h3>Performance</h3>
+                <p>Track your academic progress across subjects with visual indicators.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA / LOGIN BAND -->
+    <section class="cta-band">
+        <div class="cta-band-text">
+            <h3>Ready to dive in?</h3>
+            <p>Login to unlock your personal dashboard with full resource access.</p>
+        </div>
+        <a href="{% url 'login' %}" class="cta-band-btn" id="ctaLoginBtn">
+            <i class='bx bxs-log-in'></i> Login Now
+        </a>
     </section>
 
 </main>
 
-<!-- ================= SCRIPT ================= -->
+<!-- ===== SCRIPTS ===== -->
 <script>
-    // ================================
-    //  JWT Authentication Check for Home Map
-    // ================================
     document.addEventListener("DOMContentLoaded", () => {
         const token = localStorage.getItem("access");
-        
         if (token) {
-            fetch("/api/dashboard/", {
-                headers: {
-                    "Authorization": "Bearer " + token
-                }
-            })
+            fetch("/api/dashboard/", { headers: { "Authorization": "Bearer " + token } })
             .then(res => {
-                if (res.status === 401) {
-                    localStorage.removeItem("access");
-                    localStorage.removeItem("refresh");
-                } else {
-                    // Update login shortcuts dynamically since token is valid
-                    
-                    const sideMenuLinks = document.querySelectorAll("#sideMenu a");
-                    sideMenuLinks.forEach(link => {
-                        if (link.href.includes("login")) {
-                            link.href = "/dashboard/";
-                            link.innerText = "Dashboard";
-                        }
+                if (res.status !== 401) {
+                    ["sideLoginLink"].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) { el.href = "/dashboard/"; el.innerHTML = `<i class='bx bxs-dashboard'></i> Dashboard`; }
                     });
-                    
-                    const headerLoginIcon = document.querySelector(".header-actions a.login");
-                    if (headerLoginIcon) {
-                        headerLoginIcon.href = "/dashboard/";
-                        headerLoginIcon.title = "Dashboard";
+                    const hb = document.getElementById("headerLoginBtn");
+                    if (hb) {
+                        hb.href = "/dashboard/";
+                        hb.innerHTML = `<i class='bx bxs-dashboard'></i><span class="login-label">Dashboard</span>`;
+                        hb.classList.add("dashboard-btn");
                     }
+                    const hero = document.getElementById("heroLoginBtn");
+                    if (hero) { hero.href = "/dashboard/"; hero.innerHTML = `<i class='bx bxs-dashboard'></i> Go to Dashboard`; }
+                    const cta = document.getElementById("ctaLoginBtn");
+                    if (cta) { cta.href = "/dashboard/"; cta.innerHTML = `<i class='bx bxs-dashboard'></i> Open Dashboard`; }
+                } else {
+                    localStorage.removeItem("access"); localStorage.removeItem("refresh");
                 }
-            })
-            .catch(err => {
-                console.error("Auth check failed:", err);
-            });
+            }).catch(() => {});
         }
     });
-
 </script>
 <script src="{% static 'myapp/js/indexScript.js' %}"></script>
 </body>

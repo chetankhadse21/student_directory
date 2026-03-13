@@ -4,96 +4,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'myapp/css/indexStyle.css' %}">
-    <link rel="stylesheet" href="{% static 'myapp/css/contactStyle.css' %}">
-    <title>Contact</title>
-       
+    <title>Contact Us — Student Directory</title>
+    <meta name="description" content="Get in touch with the Student Directory team via email, LinkedIn, or GitHub.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+        html{scroll-behavior:smooth;}
+        body{font-family:'Inter',system-ui,sans-serif;background:#f0eeff;color:#4b4669;min-height:100vh;-webkit-font-smoothing:antialiased;}
+        body::before{content:'';position:fixed;top:-150px;right:-100px;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(167,139,250,.17) 0%,transparent 70%);pointer-events:none;z-index:0;}
+        :root{--purple:#7c3aed;--purple-soft:#a78bfa;--purple-pale:#ede9fe;--pink:#e879a3;--teal:#14b8a6;--amber:#f59e0b;--blue:#3b82f6;--green:#10b981;--red:#ef4444;--surface:#fff;--border:#e2dff5;--text-dark:#1e1045;--text:#4b4669;--text-muted:#9590b8;}
+        header,nav,main,section,.panel{position:relative;z-index:1;}
+        #sideOverlay{display:none;position:fixed;inset:0;z-index:1999;background:rgba(30,16,69,.35);backdrop-filter:blur(3px);}
+        #sideOverlay.active{display:block;}
+        .header{height:72px;position:sticky;top:0;z-index:3000;display:flex;align-items:center;padding:0 24px;gap:16px;background:rgba(255,255,255,.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);box-shadow:0 1px 0 var(--border),0 4px 20px rgba(100,80,200,.07);}
+        .menu-toggle{width:40px;height:40px;background:#f0eeff;border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;}
+        .menu-toggle:hover{background:var(--purple);border-color:var(--purple);color:#fff;box-shadow:0 4px 14px rgba(124,58,237,.4);}
+        .logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;}
+        .logo img{height:36px;width:auto;border-radius:8px;filter:drop-shadow(0 2px 8px rgba(124,58,237,.22));}
+        .logo-text strong{display:block;font-size:15px;font-weight:800;color:var(--text-dark);line-height:1.1;}
+        .logo-text span{font-size:10px;font-weight:500;color:var(--purple-soft);letter-spacing:.08em;text-transform:uppercase;}
+        .header-nav{flex:1;display:flex;justify-content:center;gap:4px;}
+        .header-nav a{padding:7px 14px;border-radius:50px;font-size:13.5px;font-weight:500;color:var(--text);text-decoration:none;transition:all .2s;}
+        .header-nav a:hover,.header-nav a.active{color:var(--purple);background:var(--purple-pale);font-weight:600;}
+        @media(max-width:640px){.header-nav{display:none;}}
+        .header-actions{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+        #darkToggle{width:38px;height:38px;background:#f0eeff;border:1px solid var(--border);border-radius:50%;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+        #darkToggle:hover{border-color:var(--purple-soft);transform:rotate(15deg);}
+        .login-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;background:linear-gradient(135deg,var(--purple) 0%,#9333ea 60%,var(--pink) 100%);border-radius:50px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;box-shadow:0 4px 14px rgba(124,58,237,.35);transition:all .2s;}
+        .login-btn:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(124,58,237,.5);}
+        #sideMenu{width:255px;height:100vh;position:fixed;top:0;left:0;z-index:2000;background:#fff;border-right:1px solid var(--border);box-shadow:4px 0 30px rgba(100,80,200,.10);transform:translateX(-265px);transition:transform .3s ease;display:flex;flex-direction:column;overflow-y:auto;}
+        #sideMenu.active{transform:translateX(0);}
+        .sidebar-header{background:linear-gradient(135deg,var(--purple),var(--pink));padding:20px;display:flex;align-items:center;gap:10px;flex-shrink:0;position:relative;}
+        .sidebar-header-icon{width:36px;height:36px;background:rgba(255,255,255,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;}
+        .sidebar-header-text{font-size:15px;font-weight:700;color:#fff;}
+        .close-btn{position:absolute;top:16px;right:16px;font-size:22px;cursor:pointer;color:rgba(255,255,255,.8);background:none;border:none;line-height:1;}
+        .close-btn:hover{color:#fff;}
+        .sidebar-label{padding:14px 20px 4px;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);}
+        #sideMenu a{display:flex;align-items:center;gap:11px;padding:11px 20px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;border-left:3px solid transparent;transition:all .2s;}
+        #sideMenu a i{font-size:18px;color:var(--text-muted);transition:color .2s;}
+        #sideMenu a:hover{color:var(--purple);background:var(--purple-pale);border-left-color:var(--purple);}
+        #sideMenu a:hover i{color:var(--purple);}
+        .page{max-width:900px;margin:0 auto;padding:36px 20px 80px;display:flex;flex-direction:column;gap:28px;}
+        .page-hero{background:linear-gradient(135deg,var(--purple) 0%,#9333ea 55%,var(--pink) 100%);border-radius:24px;padding:40px 36px;color:#fff;box-shadow:0 12px 40px rgba(124,58,237,.28);position:relative;overflow:hidden;}
+        .page-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.07);}
+        .hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);border-radius:50px;padding:4px 12px;font-size:11px;font-weight:600;margin-bottom:12px;}
+        .page-hero h1{font-size:28px;font-weight:800;line-height:1.25;margin-bottom:8px;position:relative;z-index:1;}
+        .page-hero p{font-size:14px;opacity:.82;line-height:1.6;max-width:500px;position:relative;z-index:1;}
+        .panel{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;box-shadow:0 2px 12px rgba(100,80,200,.07);}
+        .sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+        .sec-head h2{font-size:16px;font-weight:700;color:var(--text-dark);display:flex;align-items:center;gap:8px;}
+        .sec-head h2::before{content:'';display:inline-block;width:4px;height:18px;background:linear-gradient(to bottom,var(--purple),var(--pink));border-radius:2px;}
+
+        /* Two-col layout */
+        .contact-cols{display:grid;grid-template-columns:1fr 1.1fr;gap:20px;}
+        @media(max-width:700px){.contact-cols{grid-template-columns:1fr;}}
+
+        /* Contact links */
+        .contact-links{display:flex;flex-direction:column;gap:12px;}
+        .contact-link{display:flex;align-items:center;gap:14px;padding:14px 16px;background:#f8f7ff;border:1px solid var(--border);border-radius:14px;text-decoration:none;transition:all .2s;color:var(--text);}
+        .contact-link:hover{border-color:var(--purple-soft);box-shadow:0 4px 16px rgba(100,80,200,.12);transform:translateX(3px);}
+        .cl-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+        .cl-email  {background:#ede9fe;color:var(--purple);}
+        .cl-li     {background:#dbeafe;color:#0077b5;}
+        .cl-gh     {background:#f1f5f9;color:#24292e;}
+        .cl-phone  {background:#d1fae5;color:var(--green);}
+        .contact-link-text strong{display:block;font-size:13.5px;font-weight:600;color:var(--text-dark);}
+        .contact-link-text span{font-size:12px;color:var(--text-muted);}
+        .cl-arrow{margin-left:auto;font-size:18px;color:var(--text-muted);transition:color .2s;}
+        .contact-link:hover .cl-arrow{color:var(--purple);}
+
+        /* Message form */
+        .form-grid{display:flex;flex-direction:column;gap:16px;}
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+        @media(max-width:500px){.form-row{grid-template-columns:1fr;}}
+        .form-group{display:flex;flex-direction:column;gap:6px;}
+        .form-group label{font-size:12.5px;font-weight:600;color:var(--text-dark);}
+        .form-group input,.form-group textarea{
+            padding:11px 14px;background:#f8f7ff;border:1.5px solid var(--border);
+            border-radius:12px;font-size:13.5px;color:var(--text-dark);
+            font-family:'Inter',sans-serif;outline:none;transition:all .2s;resize:vertical;
+        }
+        .form-group input:focus,.form-group textarea:focus{border-color:var(--purple-soft);background:#fff;box-shadow:0 0 0 3px rgba(124,58,237,.1);}
+        .submit-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--purple),var(--pink));border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(124,58,237,.35);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+        .submit-btn:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(124,58,237,.5);}
+        #msgBox{padding:12px 16px;border-radius:12px;font-size:13.5px;font-weight:500;display:none;}
+        #msgBox.success{background:#d1fae5;color:#065f46;border:1px solid #a7f3d0;}
+        #msgBox.error{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+
+        ::-webkit-scrollbar{width:5px;} ::-webkit-scrollbar-track{background:#e8e5f8;} ::-webkit-scrollbar-thumb{background:var(--purple-soft);border-radius:3px;}
+        @media(max-width:640px){.page{padding:20px 14px 60px;} .page-hero{padding:28px 20px;} .page-hero h1{font-size:22px;}}
+    </style>
 </head>
 <body>
+<div id="sideOverlay"></div>
 
-    <div class="header">
-        <button class="menu-toggle" id="menuToggle">☰</button>
-         <a href="https://i.ibb.co/21KTgLmN/logo1.png" class="logo">
+<header class="header">
+    <button class="menu-toggle" id="menuToggle" aria-label="Open Menu"><i class='bx bx-menu'></i></button>
+    <a href="{% url 'myapp:index' %}" class="logo">
         <img src="https://i.ibb.co/21KTgLmN/logo1.png" alt="Logo">
-      </a>
-       
+        <div class="logo-text"><strong>Student Directory</strong><span>Academic Hub</span></div>
+    </a>
+    <nav class="header-nav">
+        <a href="{% url 'myapp:index' %}">Home</a>
+        <a href="{% url 'myapp:semester' %}">Semesters</a>
+        <a href="{% url 'myapp:about' %}">About</a>
+        <a href="{% url 'myapp:help' %}">Help</a>
+    </nav>
+    <div class="header-actions">
+        <button id="darkToggle">🌙</button>
+        <a href="{% url 'login' %}" class="login-btn"><i class='bx bxs-user'></i><span>Login</span></a>
+    </div>
+</header>
+
+<nav id="sideMenu">
+    <div class="sidebar-header">
+        <div class="sidebar-header-icon"><i class='bx bxs-graduation'></i></div>
+        <span class="sidebar-header-text">Student Directory</span>
+        <button class="close-btn" id="closeMenu">&times;</button>
+    </div>
+    <p class="sidebar-label">Navigation</p>
+    <a href="{% url 'myapp:index' %}"><i class='bx bxs-home'></i> Home</a>
+    <a href="{% url 'myapp:semester' %}"><i class='bx bx-calendar'></i> Semester</a>
+    <a href="{% url 'myapp:about' %}"><i class='bx bx-info-circle'></i> About</a>
+    <a href="{% url 'myapp:contact' %}"><i class='bx bx-envelope'></i> Contact</a>
+    <a href="{% url 'myapp:help' %}"><i class='bx bx-help-circle'></i> Help</a>
+    <a href="{% url 'login' %}"><i class='bx bxs-user'></i> Login</a>
+</nav>
+
+<main class="page">
+
+    <div class="page-hero">
+        <div class="hero-badge"><i class='bx bx-envelope'></i> Get in Touch</div>
+        <h1>Contact Us 📬</h1>
+        <p>Have a question, feedback, or bug to report? We'd love to hear from you — reach out through any channel below.</p>
     </div>
 
+    <!-- 2-col layout: contact info + message form -->
+    <div class="contact-cols">
 
-     <!-- Button to open sidebar -->
-        
-      
-    <!-- Sidebar -->
-    <nav id="sideMenu" class="side-menu">
-    <button class="close-btn" id="closeMenu">×</button>
-    <ul>
-      <li><a href="{% url 'myapp:index' %}">Home</a></li>
-      <li><a href="{% url 'myapp:semester' %}">Semester</a></li>
-      <li><a href="{% url 'myapp:help' %}">Help</a></li> 
-      <li><a href="{% url 'myapp:about' %}">About</a></li>
-      <li><a href="{% url 'myapp:contact' %}">Contact</a></li>
-      <li><a href="{% url 'login' %}">Login</a></li>
-    </ul>
-  </nav>
+        <!-- Contact Info -->
+        <div class="panel">
+            <div class="sec-head"><h2>Reach Us</h2></div>
+            <div class="contact-links">
+                <a href="mailto:directorystudent4@gmail.com" class="contact-link">
+                    <div class="cl-icon cl-email"><i class='bx bx-envelope'></i></div>
+                    <div class="contact-link-text">
+                        <strong>Email</strong>
+                        <span>directorystudent4@gmail.com</span>
+                    </div>
+                    <i class='bx bx-chevron-right cl-arrow'></i>
+                </a>
+                <a href="https://www.linkedin.com/in/chetankhadse/" target="_blank" class="contact-link">
+                    <div class="cl-icon cl-li"><i class='bx bxl-linkedin'></i></div>
+                    <div class="contact-link-text">
+                        <strong>LinkedIn — Chetan Khadse</strong>
+                        <span>linkedin.com/in/chetankhadse</span>
+                    </div>
+                    <i class='bx bx-chevron-right cl-arrow'></i>
+                </a>
+                <a href="https://www.linkedin.com/in/dnyaneshwari-rode/" target="_blank" class="contact-link">
+                    <div class="cl-icon cl-li"><i class='bx bxl-linkedin'></i></div>
+                    <div class="contact-link-text">
+                        <strong>LinkedIn — Dnyaneshwari Rode</strong>
+                        <span>linkedin.com/in/dnyaneshwari-rode</span>
+                    </div>
+                    <i class='bx bx-chevron-right cl-arrow'></i>
+                </a>
+                <a href="https://github.com/chetankhadse21" target="_blank" class="contact-link">
+                    <div class="cl-icon cl-gh"><i class='bx bxl-github'></i></div>
+                    <div class="contact-link-text">
+                        <strong>GitHub — chetankhadse21</strong>
+                        <span>github.com/chetankhadse21</span>
+                    </div>
+                    <i class='bx bx-chevron-right cl-arrow'></i>
+                </a>
+                <a href="https://github.com/DnyaneshwariRode" target="_blank" class="contact-link">
+                    <div class="cl-icon cl-gh"><i class='bx bxl-github'></i></div>
+                    <div class="contact-link-text">
+                        <strong>GitHub — DnyaneshwariRode</strong>
+                        <span>github.com/DnyaneshwariRode</span>
+                    </div>
+                    <i class='bx bx-chevron-right cl-arrow'></i>
+                </a>
+            </div>
+        </div>
 
+        <!-- Message form -->
+        <div class="panel">
+            <div class="sec-head"><h2>Send a Message</h2></div>
+            <form class="form-grid" id="contactForm" novalidate>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cName">Your Name</label>
+                        <input type="text" id="cName" placeholder="Chetan Khadse" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cEmail">Your Email</label>
+                        <input type="email" id="cEmail" placeholder="you@email.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cSubject">Subject</label>
+                    <input type="text" id="cSubject" placeholder="e.g. Bug Report, Feature Request">
+                </div>
+                <div class="form-group">
+                    <label for="cMessage">Message</label>
+                    <textarea id="cMessage" rows="5" placeholder="Describe your issue or feedback in detail…" required></textarea>
+                </div>
+                <div id="msgBox"></div>
+                <button type="submit" class="submit-btn"><i class='bx bx-send'></i> Send Message</button>
+            </form>
+        </div>
 
-<hr>
-
-<div class="contact-wrapper">
-
-    <!-- CONTACT DETAILS CARD -->
-    <div class="contact-card">
-        <h2>Contact Us</h2>
-
-        <p><strong><i class="fa-solid fa-envelope"></i> Email:</strong>
-            directorystudent4@gmail.com
-        </p>
-
-        <p><strong><i class="fa-brands fa-linkedin"></i> LinkedIn:</strong>
-            <a href="https://www.linkedin.com/in/chetankhadse/" target="_blank">Chetan Khadse</a>
-            &
-            <a href="https://www.linkedin.com/in/dnyaneshwari-rode/" target="_blank">Dnyaneshwari Rode</a>
-        </p>
-
-        <p><strong><i class="fa-brands fa-github"></i> GitHub:</strong>
-            <a href="https://github.com/chetankhadse21" target="_blank">chetankhadse21</a>
-            &
-            <a href="https://github.com/DnyaneshwariRode" target="_blank">DnyaneshwariRode</a>
-        </p>
-
-        <p><strong><i class="fa-solid fa-phone"></i> Phone:</strong> +91 9*******89</p>
     </div>
 
-   <!-- SEND MESSAGE CARD -->
-<div class="contact-card">
-    <h2>Send Us a Message</h2>
+</main>
 
-    <form id="contactForm">
-        <label>Name:</label>
-        <input type="text" id="name">
-
-        <label>Email:</label>
-        <input type="email" id="email">
-
-        <label>Message:</label>
-        <textarea rows="5" id="message"></textarea>
-
-        <button type="submit">Submit</button>
-    </form>
-
-    <div id="msgBox" style="display:none;"></div>
-</div>
-
-</div>
-
-
-</div>
-
-    <script src="{% static 'myapp/js/indexScript.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script src="{% static 'myapp/js/indexScript.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script src="{% static 'myapp/js/contact.js' %}"></script>
+<script>
+    const form   = document.getElementById("contactForm");
+    const msgBox = document.getElementById("msgBox");
 
-
+    if (form) {
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const name    = document.getElementById("cName").value.trim();
+            const email   = document.getElementById("cEmail").value.trim();
+            const message = document.getElementById("cMessage").value.trim();
+            if (!name || !email || !message) {
+                msgBox.className = "error";
+                msgBox.style.display = "block";
+                msgBox.textContent = "Please fill in all required fields.";
+                return;
+            }
+            msgBox.className = "success";
+            msgBox.style.display = "block";
+            msgBox.textContent = "✓ Thanks! Your message has been sent. We'll reply soon.";
+            form.reset();
+        });
+    }
+</script>
 </body>
 </html>

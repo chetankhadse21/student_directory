@@ -3,140 +3,938 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Student Directory</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        /* ===================================================
+           DASHBOARD — SELF-CONTAINED STYLESHEET
+           (no dependency on indexStyle.css to avoid conflicts)
+        =================================================== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: #f0eeff;
+            color: #4b4669;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-    <!-- Icons -->
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        /* ===== VARIABLES ===== */
+        :root {
+            --purple: #7c3aed;
+            --purple-soft: #a78bfa;
+            --purple-pale: #ede9fe;
+            --purple-dark: #5b21b6;
+            --pink: #e879a3;
+            --teal: #14b8a6;
+            --amber: #f59e0b;
+            --blue: #3b82f6;
+            --green: #10b981;
+            --red: #ef4444;
+            --white: #ffffff;
+            --bg: #f0eeff;
+            --surface: #ffffff;
+            --border: #e2dff5;
+            --text-dark: #1e1045;
+            --text: #4b4669;
+            --text-muted: #9590b8;
+        }
 
-    <!-- Your existing CSS -->
-    <link rel="stylesheet" href="{% static 'myapp/css/indexStyle.css' %}">
-    <link rel="stylesheet" href="{% static 'myapp/css/dashboard.css' %}">
-    
+        /* ===== SIDEBAR OVERLAY ===== */
+        #sideOverlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1999;
+            background: rgba(30,16,69,0.35);
+            backdrop-filter: blur(3px);
+        }
+        #sideOverlay.active { display: block; }
+
+        /* ===== HEADER ===== */
+        .header {
+            height: 64px;
+            position: sticky;
+            top: 0;
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            background: rgba(255,255,255,0.94);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 1px 0 var(--border), 0 4px 20px rgba(100,80,200,0.07);
+            gap: 16px;
+        }
+        .menu-toggle {
+            width: 40px; height: 40px;
+            background: #f0eeff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 20px;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .menu-toggle:hover { background: var(--purple); border-color: var(--purple); color: white; box-shadow: 0 4px 14px rgba(124,58,237,0.4); }
+
+        /* Dashboard logo (brand + user pill) */
+        .dash-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .dash-logo-icon {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; color: white;
+            box-shadow: 0 4px 12px rgba(124,58,237,0.35);
+            flex-shrink: 0;
+        }
+        .dash-logo-text strong {
+            display: block;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-dark);
+            letter-spacing: -0.01em;
+            line-height: 1.1;
+        }
+        .dash-logo-text span {
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        /* User pill in the center */
+        .user-pill {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+        .user-pill-inner {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #f0eeff;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 6px 14px 6px 8px;
+        }
+        .user-avatar {
+            width: 28px; height: 28px;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; color: white; font-weight: 700;
+            flex-shrink: 0;
+        }
+        .user-pill-text strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            line-height: 1.1;
+        }
+        .user-pill-text #username {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .header-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+        #darkToggle {
+            width: 38px; height: 38px;
+            background: #f0eeff;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+        }
+        #darkToggle:hover { background: #f0eeff; border-color: var(--purple-soft); transform: rotate(15deg); }
+        #logoutBtn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            border-radius: 50px;
+            color: var(--red);
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        #logoutBtn i { font-size: 16px; }
+        #logoutBtn:hover { background: var(--red); border-color: var(--red); color: white; box-shadow: 0 4px 12px rgba(239,68,68,0.35); }
+
+        /* ===== SIDEBAR ===== */
+        #sideMenu {
+            width: 255px;
+            height: 100vh;
+            position: fixed;
+            top: 0; left: 0;
+            z-index: 2000;
+            background: white;
+            border-right: 1px solid var(--border);
+            box-shadow: 4px 0 30px rgba(100,80,200,0.12);
+            transform: translateX(-265px);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        #sideMenu.active { transform: translateX(0); }
+        .sidebar-header {
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        .sidebar-header-icon {
+            width: 36px; height: 36px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; color: white;
+        }
+        .sidebar-header-text { font-size: 15px; font-weight: 700; color: white; }
+        .close-btn {
+            position: absolute;
+            top: 16px; right: 16px;
+            font-size: 22px;
+            cursor: pointer;
+            color: rgba(255,255,255,0.8);
+            background: none;
+            border: none;
+            line-height: 1;
+            z-index: 1;
+        }
+        .close-btn:hover { color: white; }
+        .sidebar-section { padding: 12px 0; }
+        .sidebar-label {
+            padding: 8px 20px 4px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        #sideMenu a {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 11px 20px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        #sideMenu a i { font-size: 18px; color: var(--text-muted); transition: color 0.2s; }
+        #sideMenu a:hover {
+            color: var(--purple);
+            background: var(--purple-pale);
+            border-left-color: var(--purple);
+        }
+        #sideMenu a:hover i { color: var(--purple); }
+
+        /* ===== MAIN WRAPPER ===== */
+        .page {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 32px 20px 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        /* ===== HERO BANNER ===== */
+        .dash-hero {
+            background: linear-gradient(135deg, #7c3aed 0%, #9333ea 55%, #e879a3 100%);
+            border-radius: 24px;
+            padding: 36px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
+            box-shadow: 0 12px 40px rgba(124,58,237,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+        .dash-hero::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 240px; height: 240px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+        }
+        .dash-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -70px; left: 30%;
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+        }
+        .hero-text { position: relative; z-index: 1; }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.28);
+            border-radius: 50px;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 12px;
+        }
+        .dash-hero h1 { font-size: 26px; font-weight: 800; color: white; margin-bottom: 6px; line-height: 1.25; }
+        .dash-hero p  { font-size: 14px; color: rgba(255,255,255,0.82); line-height: 1.55; max-width: 420px; }
+        .hero-stats { display: flex; gap: 12px; position: relative; z-index: 1; flex-wrap: wrap; }
+        .hero-stat {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.22);
+            border-radius: 14px;
+            padding: 14px 18px;
+            min-width: 130px;
+            backdrop-filter: blur(8px);
+        }
+        .hero-stat strong { display: block; font-size: 22px; font-weight: 800; color: white; }
+        .hero-stat span   { font-size: 11px; color: rgba(255,255,255,0.78); font-weight: 500; }
+
+        /* ===== NOTIFICATION ===== */
+        .notif-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 18px;
+            border-radius: 14px;
+            background: var(--purple-pale);
+            border: 1.5px solid rgba(124,58,237,0.2);
+            font-size: 13px;
+            color: var(--purple-dark);
+        }
+        .notif-bar i { font-size: 18px; color: var(--purple); flex-shrink: 0; }
+        .notif-bar strong { color: var(--purple-dark); }
+        .notif-bar button {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: var(--purple-soft);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 0;
+            flex-shrink: 0;
+        }
+        .notif-bar button:hover { color: var(--pink); }
+
+        /* ===== SECTION HEADING ===== */
+        .sec-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .sec-head h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sec-head h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px; height: 18px;
+            background: linear-gradient(to bottom, var(--purple), var(--pink));
+            border-radius: 2px;
+        }
+        .sec-head a {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--purple);
+            text-decoration: none;
+        }
+        .sec-head a:hover { color: var(--purple-dark); }
+
+        /* ===== STAT CARDS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+        @media (max-width: 700px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 12px rgba(100,80,200,0.07);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--purple), var(--pink));
+        }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(100,80,200,0.14); }
+        .stat-icon {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+        .si-purple { background: var(--purple-pale); color: var(--purple); }
+        .si-pink   { background: #fce7f3;           color: var(--pink); }
+        .si-teal   { background: #ccfbf1;           color: var(--teal); }
+        .si-amber  { background: #fef3c7;           color: var(--amber); }
+        .si-blue   { background: #dbeafe;           color: var(--blue); }
+        .si-green  { background: #d1fae5;           color: var(--green); }
+        .stat-value { font-size: 28px; font-weight: 800; color: var(--text-dark); line-height: 1; margin-bottom: 4px; }
+        .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+
+        /* ===== 2-COLUMN LAYOUT ===== */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 20px;
+            align-items: start;
+        }
+        @media (max-width: 800px) { .two-col { grid-template-columns: 1fr; } }
+
+        /* ===== PANEL (white card wrapper) ===== */
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(100,80,200,0.07);
+        }
+
+        /* ===== SHORTCUT LIST ===== */
+        .shortcut-list { display: flex; flex-direction: column; gap: 10px; }
+        .shortcut-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .shortcut-item:hover {
+            border-color: var(--purple-soft);
+            background: var(--purple-pale);
+            transform: translateX(3px);
+        }
+        .shortcut-item-icon {
+            width: 42px; height: 42px;
+            border-radius: 11px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 19px;
+            flex-shrink: 0;
+        }
+        .shortcut-item-text strong {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+        .shortcut-item-text span { font-size: 12px; color: var(--text-muted); }
+        .shortcut-arrow { margin-left: auto; font-size: 18px; color: var(--text-muted); flex-shrink: 0; }
+        .shortcut-item:hover .shortcut-arrow { color: var(--purple); }
+
+        /* ===== RECENT ACTIVITY ===== */
+        .activity-list { display: flex; flex-direction: column; }
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text);
+        }
+        .activity-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .activity-item:first-child { padding-top: 0; }
+        .activity-dot {
+            width: 9px; height: 9px;
+            border-radius: 50%;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+        .activity-time { margin-left: auto; font-size: 11px; color: var(--text-muted); white-space: nowrap; padding-left: 8px; }
+
+        /* ===== RESOURCE CARDS ===== */
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+        @media (max-width: 700px) { .resource-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .res-card {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: 18px;
+            padding: 24px 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 10px rgba(100,80,200,0.07);
+        }
+        .res-card:hover { transform: translateY(-5px); box-shadow: 0 10px 28px rgba(100,80,200,0.15); border-color: var(--purple-soft); }
+        .res-icon {
+            width: 56px; height: 56px;
+            border-radius: 15px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+        .res-card strong { font-size: 14px; font-weight: 700; color: var(--text-dark); }
+        .res-card p      { font-size: 12px; color: var(--text-muted); }
+        .res-view { font-size: 12px; font-weight: 600; color: var(--purple); opacity: 0; transform: translateY(4px); transition: all 0.2s; }
+        .res-card:hover .res-view { opacity: 1; transform: translateY(0); }
+
+        /* ===== PROGRESS BARS ===== */
+        .progress-list { display: flex; flex-direction: column; gap: 16px; }
+        .prog-item {}
+        .prog-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 7px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
+        }
+        .prog-header span { color: var(--text-muted); font-weight: 400; }
+        .prog-track {
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .prog-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--purple), var(--pink));
+        }
+
+        /* ===== HEATMAP ===== */
+        .heatmap-section {}
+        .heatmap-subtext {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .heatmap {
+            display: grid;
+            grid-template-columns: repeat(26, 13px);
+            grid-auto-rows: 13px;
+            gap: 3px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+        .day {
+            width: 13px; height: 13px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: outline 0.15s, transform 0.15s;
+        }
+        .day:hover { outline: 2px solid var(--purple); transform: scale(1.2); }
+        .l0 { background: #e8e5f8; }
+        .l1 { background: rgba(124,58,237,0.25); }
+        .l2 { background: rgba(124,58,237,0.45); }
+        .l3 { background: rgba(124,58,237,0.68); }
+        .l4 { background: #7c3aed; box-shadow: 0 0 5px rgba(124,58,237,0.5); }
+        .legend { display: flex; align-items: center; gap: 6px; margin-top: 12px; font-size: 11px; color: var(--text-muted); }
+        .leg-box { width: 11px; height: 11px; border-radius: 2px; }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #e8e5f8; }
+        ::-webkit-scrollbar-thumb { background: var(--purple-soft); border-radius: 3px; }
+    </style>
 </head>
 <body>
 
+<div id="sideOverlay"></div>
+
 <!-- ===== HEADER ===== -->
 <header class="header">
-    <button class="menu-toggle" id="menuToggle">☰</button>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open Menu">
+        <i class='bx bx-menu'></i>
+    </button>
 
-    <div class="logo">
-        <h2>Student Dashboard</h2>
-        <p id="username">Loading...</p>
+    <!-- Brand logo -->
+    <div class="dash-logo">
+        <div class="dash-logo-icon"><i class='bx bxs-graduation'></i></div>
+        <div class="dash-logo-text">
+            <strong>Student Directory</strong>
+            <span>Dashboard</span>
+        </div>
+    </div>
+
+    <!-- User info pill -->
+    <div class="user-pill">
+        <div class="user-pill-inner">
+            <div class="user-avatar" id="userAvatar">A</div>
+            <div class="user-pill-text">
+                <strong>Student</strong>
+                <p id="username">Loading…</p>
+            </div>
+        </div>
     </div>
 
     <div class="header-actions">
-        <button id="darkToggle">🌙</button>
-        <a href="#" id="logoutBtn" class="login">
+        <button id="darkToggle" title="Toggle Theme">🌙</button>
+        <a href="#" id="logoutBtn" title="Logout">
             <i class='bx bx-log-out'></i>
+            <span>Logout</span>
         </a>
     </div>
 </header>
 
 <!-- ===== SIDEBAR ===== -->
-<nav id="sideMenu">
-    <span class="close-btn" id="closeMenu">×</span>
-    <ul>
-        <li><a href="{% url 'myapp:index' %}">Home</a></li>
-      <li><a href="{% url 'myapp:semester' %}">Semester</a></li>
-      <li><a href="{% url 'myapp:help' %}">Help</a></li> 
-      <li><a href="{% url 'myapp:about' %}">About</a></li>
-      <li><a href="{% url 'myapp:contact' %}">Contact</a></li>
-        <li><a href="">Profile</a></li>
-    </ul>
+<nav id="sideMenu" aria-label="Sidebar Navigation">
+    <div class="sidebar-header">
+        <div class="sidebar-header-icon"><i class='bx bxs-graduation'></i></div>
+        <span class="sidebar-header-text">Student Directory</span>
+        <button class="close-btn" id="closeMenu" aria-label="Close">&times;</button>
+    </div>
+
+    <div class="sidebar-section">
+        <p class="sidebar-label">Main</p>
+        <a href="{% url 'myapp:index' %}"><i class='bx bxs-home'></i> Home</a>
+        <a href="{% url 'myapp:semester' %}"><i class='bx bx-calendar'></i> Semester</a>
+        <a href="#"><i class='bx bxs-user-circle'></i> Profile</a>
+    </div>
+
+    <div class="sidebar-section">
+        <p class="sidebar-label">Resources</p>
+        <a href="{% url 'myapp:index' %}"><i class='bx bx-book-open'></i> Books &amp; Notes</a>
+        <a href="{% url 'myapp:index' %}"><i class='bx bx-edit-alt'></i> Assignments</a>
+        <a href="{% url 'myapp:index' %}"><i class='bx bx-check-circle'></i> Attendance</a>
+    </div>
+
+    <div class="sidebar-section">
+        <p class="sidebar-label">Support</p>
+        <a href="{% url 'myapp:help' %}"><i class='bx bx-help-circle'></i> Help</a>
+        <a href="{% url 'myapp:about' %}"><i class='bx bx-info-circle'></i> About</a>
+        <a href="{% url 'myapp:contact' %}"><i class='bx bx-envelope'></i> Contact</a>
+    </div>
 </nav>
 
 <!-- ===== MAIN CONTENT ===== -->
-<main class="dashboard">
-    <!-- ===== HERO ===== -->
-    <section class="hero">
-        <button class="section-btn">Quick Access</button>
+<main class="page">
 
-        <div class="hero-buttons">
-            <button>📘 Semesters</button>
-            <button>📚 Notes</button>
-            <button>📝 Assignments</button>
+    <!-- HERO -->
+    <div class="dash-hero">
+        <div class="hero-text">
+            <div class="hero-badge"><i class='bx bx-pulse'></i> Live Dashboard</div>
+            <h1>Welcome back! 👋</h1>
+            <p>Here's a quick overview of your academic progress. Jump to any section below.</p>
         </div>
-    </section>
-
-    <!-- ===== NOTIFICATION ===== -->
-    <div class="notification-bar" id="notificationBar">
-        <span>📢 Welcome to your dashboard</span>
-        <button class="close-note">✖</button>
-    </div>
-
-    <!-- ===== SNAPSHOT ===== -->
-    <section class="snapshot">
-        <h2>Your Overview</h2>
-        <div class="snapshot-cards">
-            <div class="snap-card">
-                Total Subjects
-                <p>6</p>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <strong>Sem 5</strong>
+                <span>Current Semester</span>
             </div>
-        </div>
-    </section>
-
-    <!-- ===== CARDS ===== -->
-    <div class="card-container">
-        <div class="card">
-            <i class='bx bx-book'></i>
-            Notes
-            <div class="btn-group">
-                <a class="preview-btn">View</a>
-            </div>
-        </div>
-
-        <div class="card">
-            <i class='bx bx-edit'></i>
-            Assignments
-            <div class="btn-group">
-                <a class="preview-btn">View</a>
-            </div>
-        </div>
-
-        <div class="card">
-            <i class='bx bx-calendar'></i>
-            Exams
-            <div class="btn-group">
-                <a class="preview-btn">View</a>
+            <div class="hero-stat">
+                <strong>87%</strong>
+                <span>Attendance</span>
             </div>
         </div>
     </div>
 
-    <!-- ===== RECENT ===== -->
-    <section class="recent">
-        <h2>Recent Activity</h2>
-        <ul>
-            <li>Math Assignment Uploaded</li>
-            <li>Physics Notes Updated</li>
-            <li>Semester 3 Activated</li>
-        </ul>
+    <!-- NOTIFICATION -->
+    <div class="notif-bar" id="notificationBar">
+        <i class='bx bx-info-circle'></i>
+        <span><strong>Tip:</strong> Go to the Home page → select a semester &amp; category to browse resources.</span>
+        <button id="closeNote">✕</button>
+    </div>
+
+    <!-- STATS -->
+    <section>
+        <div class="sec-head">
+            <h2>Overview</h2>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon si-purple"><i class='bx bx-book'></i></div>
+                <div class="stat-value">6</div>
+                <div class="stat-label">Subjects</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon si-pink"><i class='bx bx-edit-alt'></i></div>
+                <div class="stat-value">12</div>
+                <div class="stat-label">Assignments</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon si-teal"><i class='bx bx-check-circle'></i></div>
+                <div class="stat-value">87%</div>
+                <div class="stat-label">Attendance</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon si-amber"><i class='bx bx-calendar-check'></i></div>
+                <div class="stat-value">Sem 5</div>
+                <div class="stat-label">Current</div>
+            </div>
+        </div>
     </section>
 
-    <div class="container">
-      <h2>Attendance Overview</h2>
-      <p class="subtext">Teacher access only</p>
+    <!-- QUICK ACCESS + RECENT ACTIVITY -->
+    <div class="two-col">
+        <!-- Quick Access -->
+        <div class="panel">
+            <div class="sec-head">
+                <h2>Quick Access</h2>
+                <a href="{% url 'myapp:index' %}">View all</a>
+            </div>
+            <div class="shortcut-list">
+                <a href="{% url 'myapp:semester' %}" class="shortcut-item">
+                    <div class="shortcut-item-icon si-purple"><i class='bx bx-book-open'></i></div>
+                    <div class="shortcut-item-text">
+                        <strong>Semester Resources</strong>
+                        <span>Books, notes &amp; assignments</span>
+                    </div>
+                    <i class='bx bx-chevron-right shortcut-arrow'></i>
+                </a>
+                <a href="{% url 'myapp:index' %}" class="shortcut-item">
+                    <div class="shortcut-item-icon si-pink"><i class='bx bx-edit-alt'></i></div>
+                    <div class="shortcut-item-text">
+                        <strong>Assignments</strong>
+                        <span>Download or preview</span>
+                    </div>
+                    <i class='bx bx-chevron-right shortcut-arrow'></i>
+                </a>
+                <a href="{% url 'myapp:index' %}" class="shortcut-item">
+                    <div class="shortcut-item-icon si-teal"><i class='bx bx-note'></i></div>
+                    <div class="shortcut-item-text">
+                        <strong>Lecture Notes</strong>
+                        <span>PDFs &amp; handwritten notes</span>
+                    </div>
+                    <i class='bx bx-chevron-right shortcut-arrow'></i>
+                </a>
+                <a href="{% url 'myapp:index' %}" class="shortcut-item">
+                    <div class="shortcut-item-icon si-amber"><i class='bx bx-calendar-check'></i></div>
+                    <div class="shortcut-item-text">
+                        <strong>Attendance</strong>
+                        <span>View your attendance record</span>
+                    </div>
+                    <i class='bx bx-chevron-right shortcut-arrow'></i>
+                </a>
+            </div>
+        </div>
 
-      <div class="months" id="months"></div>
-      <div class="heatmap" id="heatmap"></div>
-
-      <div class="legend">
-        <span>Less</span>
-        <div class="box l0"></div>
-        <div class="box l1"></div>
-        <div class="box l2"></div>
-        <div class="box l3"></div>
-        <div class="box l4"></div>
-        <span>More</span>
-      </div>
+        <!-- Recent Activity -->
+        <div class="panel">
+            <div class="sec-head">
+                <h2>Recent Activity</h2>
+            </div>
+            <div class="activity-list">
+                <div class="activity-item">
+                    <div class="activity-dot" style="background:#7c3aed;"></div>
+                    <span>Math Assignment Uploaded</span>
+                    <span class="activity-time">2h ago</span>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-dot" style="background:#14b8a6;"></div>
+                    <span>Physics Notes Updated</span>
+                    <span class="activity-time">5h ago</span>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-dot" style="background:#f59e0b;"></div>
+                    <span>Semester 3 Activated</span>
+                    <span class="activity-time">Yesterday</span>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-dot" style="background:#3b82f6;"></div>
+                    <span>Chemistry Book Added</span>
+                    <span class="activity-time">2 days ago</span>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-dot" style="background:#e879a3;"></div>
+                    <span>Exam Timetable Published</span>
+                    <span class="activity-time">3 days ago</span>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- RESOURCE CARDS -->
+    <section>
+        <div class="sec-head">
+            <h2>Resources</h2>
+            <a href="{% url 'myapp:index' %}">Browse all</a>
+        </div>
+        <div class="resource-grid">
+            <a href="{% url 'myapp:index' %}" class="res-card">
+                <div class="res-icon si-purple"><i class='bx bx-book'></i></div>
+                <strong>Notes</strong>
+                <p>Lecture &amp; revision</p>
+                <span class="res-view">View →</span>
+            </a>
+            <a href="{% url 'myapp:index' %}" class="res-card">
+                <div class="res-icon si-pink"><i class='bx bx-edit'></i></div>
+                <strong>Assignments</strong>
+                <p>Submit &amp; track</p>
+                <span class="res-view">View →</span>
+            </a>
+            <a href="{% url 'myapp:index' %}" class="res-card">
+                <div class="res-icon si-amber"><i class='bx bx-calendar'></i></div>
+                <strong>Exams</strong>
+                <p>Schedule &amp; syllabus</p>
+                <span class="res-view">View →</span>
+            </a>
+            <a href="{% url 'myapp:index' %}" class="res-card">
+                <div class="res-icon si-teal"><i class='bx bx-book-open'></i></div>
+                <strong>Books</strong>
+                <p>Textbooks &amp; PDFs</p>
+                <span class="res-view">View →</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- SUBJECT PROGRESS -->
+    <div class="panel">
+        <div class="sec-head">
+            <h2>Subject Progress</h2>
+        </div>
+        <div class="progress-list">
+            <div class="prog-item">
+                <div class="prog-header">Mathematics <span>72%</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:72%"></div></div>
+            </div>
+            <div class="prog-item">
+                <div class="prog-header">Physics <span>85%</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:85%"></div></div>
+            </div>
+            <div class="prog-item">
+                <div class="prog-header">Chemistry <span>60%</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:60%"></div></div>
+            </div>
+            <div class="prog-item">
+                <div class="prog-header">Computer Science <span>91%</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:91%"></div></div>
+            </div>
+            <div class="prog-item">
+                <div class="prog-header">English <span>78%</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:78%"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ATTENDANCE HEATMAP -->
+    <div class="panel heatmap-section">
+        <div class="sec-head">
+            <h2>Attendance Overview</h2>
+        </div>
+        <p class="heatmap-subtext">🔒 Teacher access only — read-only view</p>
+        <div class="heatmap" id="heatmap"></div>
+        <div class="legend">
+            <span>Less</span>
+            <div class="leg-box l0"></div>
+            <div class="leg-box l1"></div>
+            <div class="leg-box l2"></div>
+            <div class="leg-box l3"></div>
+            <div class="leg-box l4"></div>
+            <span>More</span>
+        </div>
+    </div>
+
 </main>
 
-
-
-<!-- ===== BASIC UI JS ===== -->
+<!-- ===== SCRIPTS ===== -->
 <script src="{% static 'myapp/js/dashboard.js' %}"></script>
-<script src="{% static 'myapp/js/indexScript.js' %}"></script>
+<script>
+    // Sidebar
+    const menuToggle = document.getElementById("menuToggle");
+    const sideMenu   = document.getElementById("sideMenu");
+    const closeMenu  = document.getElementById("closeMenu");
+    const overlay    = document.getElementById("sideOverlay");
 
+    const openSidebar  = () => { sideMenu.classList.add("active"); overlay.classList.add("active"); document.body.style.overflow = "hidden"; };
+    const closeSidebar = () => { sideMenu.classList.remove("active"); overlay.classList.remove("active"); document.body.style.overflow = ""; };
+    if (menuToggle) menuToggle.addEventListener("click", openSidebar);
+    if (closeMenu)  closeMenu.addEventListener("click", closeSidebar);
+    if (overlay)    overlay.addEventListener("click", closeSidebar);
+
+    // Notification
+    const closeNote = document.getElementById("closeNote");
+    const notifBar  = document.getElementById("notificationBar");
+    if (closeNote && notifBar) {
+        closeNote.addEventListener("click", () => {
+            notifBar.style.opacity = "0";
+            notifBar.style.transition = "opacity 0.3s";
+            setTimeout(() => notifBar.style.display = "none", 300);
+        });
+    }
+
+    // Heatmap
+    (function() {
+        const hm = document.getElementById("heatmap");
+        if (!hm) return;
+        for (let i = 0; i < 182; i++) {
+            const d = document.createElement("div");
+            d.classList.add("day", "l" + Math.floor(Math.random() * 5));
+            hm.appendChild(d);
+        }
+    })();
+
+    // Dark mode
+    document.addEventListener("DOMContentLoaded", () => {
+        const dt = document.getElementById("darkToggle");
+        if (!dt) return;
+        if (localStorage.getItem("theme") === "dark") { document.body.style.background = "#0f0b1f"; document.body.style.color = "#b0a8d8"; }
+        dt.addEventListener("click", () => {
+            const isDark = document.body.style.background === "rgb(15, 11, 31)";
+            document.body.style.background = isDark ? "" : "#0f0b1f";
+            document.body.style.color = isDark ? "" : "#b0a8d8";
+            localStorage.setItem("theme", isDark ? "light" : "dark");
+            dt.textContent = isDark ? "🌙" : "☀️";
+        });
+    });
+</script>
 </body>
 </html>

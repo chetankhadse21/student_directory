@@ -1,96 +1,839 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'myapp/css/helpStyle.css' %}">
-    <link rel="stylesheet" href="{% static 'myapp/css/indexStyle.css' %}">
-    <title>Help</title>
+    <title>Help &amp; Support — Student Directory</title>
+    <meta name="description"
+        content="Find answers to common questions, quick guides, and troubleshooting tips for Student Directory.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: #f0eeff;
+            color: #4b4669;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -150px;
+            right: -100px;
+            width: 460px;
+            height: 460px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(167, 139, 250, .17) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        :root {
+            --purple: #7c3aed;
+            --purple-soft: #a78bfa;
+            --purple-pale: #ede9fe;
+            --pink: #e879a3;
+            --teal: #14b8a6;
+            --amber: #f59e0b;
+            --blue: #3b82f6;
+            --green: #10b981;
+            --surface: #fff;
+            --border: #e2dff5;
+            --text-dark: #1e1045;
+            --text: #4b4669;
+            --text-muted: #9590b8;
+        }
+
+        header,
+        nav,
+        main,
+        section,
+        .panel {
+            position: relative;
+            z-index: 1;
+        }
+
+        #sideOverlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1999;
+            background: rgba(30, 16, 69, .35);
+            backdrop-filter: blur(3px);
+        }
+
+        #sideOverlay.active {
+            display: block;
+        }
+
+        .header {
+            height: 72px;
+            position: sticky;
+            top: 0;
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 16px;
+            background: rgba(255, 255, 255, .94);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 1px 0 var(--border), 0 4px 20px rgba(100, 80, 200, .07);
+        }
+
+        .menu-toggle {
+            width: 40px;
+            height: 40px;
+            background: #f0eeff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .2s;
+            flex-shrink: 0;
+        }
+
+        .menu-toggle:hover {
+            background: var(--purple);
+            border-color: var(--purple);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(124, 58, 237, .4);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .logo img {
+            height: 36px;
+            width: auto;
+            border-radius: 8px;
+            filter: drop-shadow(0 2px 8px rgba(124, 58, 237, .22));
+        }
+
+        .logo-text strong {
+            display: block;
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1.1;
+        }
+
+        .logo-text span {
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--purple-soft);
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .header-nav {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .header-nav a {
+            padding: 7px 14px;
+            border-radius: 50px;
+            font-size: 13.5px;
+            font-weight: 500;
+            color: var(--text);
+            text-decoration: none;
+            transition: all .2s;
+        }
+
+        .header-nav a:hover,
+        .header-nav a.active {
+            color: var(--purple);
+            background: var(--purple-pale);
+            font-weight: 600;
+        }
+
+        @media(max-width:640px) {
+            .header-nav {
+                display: none;
+            }
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        #darkToggle {
+            width: 38px;
+            height: 38px;
+            background: #f0eeff;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .2s;
+        }
+
+        #darkToggle:hover {
+            border-color: var(--purple-soft);
+            transform: rotate(15deg);
+        }
+
+        .login-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 18px;
+            background: linear-gradient(135deg, var(--purple) 0%, #9333ea 60%, var(--pink) 100%);
+            border-radius: 50px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 4px 14px rgba(124, 58, 237, .35);
+            transition: all .2s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 22px rgba(124, 58, 237, .5);
+        }
+
+        #sideMenu {
+            width: 255px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 2000;
+            background: #fff;
+            border-right: 1px solid var(--border);
+            box-shadow: 4px 0 30px rgba(100, 80, 200, .10);
+            transform: translateX(-265px);
+            transition: transform .3s ease;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        #sideMenu.active {
+            transform: translateX(0);
+        }
+
+        .sidebar-header {
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .sidebar-header-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, .2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .sidebar-header-text {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 22px;
+            cursor: pointer;
+            color: rgba(255, 255, 255, .8);
+            background: none;
+            border: none;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: #fff;
+        }
+
+        .sidebar-label {
+            padding: 14px 20px 4px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .10em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        #sideMenu a {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 11px 20px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+            transition: all .2s;
+        }
+
+        #sideMenu a i {
+            font-size: 18px;
+            color: var(--text-muted);
+            transition: color .2s;
+        }
+
+        #sideMenu a:hover {
+            color: var(--purple);
+            background: var(--purple-pale);
+            border-left-color: var(--purple);
+        }
+
+        #sideMenu a:hover i {
+            color: var(--purple);
+        }
+
+        .page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 36px 20px 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .page-hero {
+            background: linear-gradient(135deg, var(--purple) 0%, #9333ea 55%, var(--pink) 100%);
+            border-radius: 24px;
+            padding: 40px 36px;
+            color: #fff;
+            box-shadow: 0 12px 40px rgba(124, 58, 237, .28);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .07);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, .18);
+            border: 1px solid rgba(255, 255, 255, .28);
+            border-radius: 50px;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .page-hero h1 {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.25;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-hero p {
+            font-size: 14px;
+            opacity: .82;
+            line-height: 1.6;
+            max-width: 500px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 2px 12px rgba(100, 80, 200, .07);
+        }
+
+        .sec-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .sec-head h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sec-head h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 18px;
+            background: linear-gradient(to bottom, var(--purple), var(--pink));
+            border-radius: 2px;
+        }
+
+        /* Quick Guide steps */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 16px;
+            background: #f8f7ff;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .step-num {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .step-text strong {
+            display: block;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+
+        .step-text span {
+            font-size: 12.5px;
+            color: var(--text-muted);
+        }
+
+        /* FAQ accordion */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .faq-item {
+            background: #f8f7ff;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .faq-q {
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            gap: 10px;
+            user-select: none;
+        }
+
+        .faq-q:hover {
+            background: var(--purple-pale);
+        }
+
+        .faq-q .chevron {
+            font-size: 18px;
+            color: var(--purple-soft);
+            transition: transform .3s;
+            flex-shrink: 0;
+        }
+
+        .faq-item.open .chevron {
+            transform: rotate(180deg);
+        }
+
+        .faq-a {
+            display: none;
+            padding: 0 18px 16px;
+            font-size: 13.5px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .faq-item.open .faq-a {
+            display: block;
+        }
+
+        /* Help cards grid */
+        .help-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .help-card {
+            background: #f8f7ff;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px 18px;
+        }
+
+        .help-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .hi-purple {
+            background: var(--purple-pale);
+            color: var(--purple);
+        }
+
+        .hi-teal {
+            background: #ccfbf1;
+            color: var(--teal);
+        }
+
+        .hi-amber {
+            background: #fef3c7;
+            color: var(--amber);
+        }
+
+        .hi-blue {
+            background: #dbeafe;
+            color: var(--blue);
+        }
+
+        .help-card h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .help-card ul {
+            padding-left: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .help-card li {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.55;
+        }
+
+        /* Feedback button */
+        .feedback-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: linear-gradient(135deg, var(--purple-pale), #fce7f3);
+            border: 1px solid rgba(124, 58, 237, .18);
+            border-radius: 16px;
+            padding: 22px 24px;
+        }
+
+        .feedback-row p {
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+
+        .feedback-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 20px;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(124, 58, 237, .35);
+            transition: all .2s;
+        }
+
+        .feedback-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, .5);
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #e8e5f8;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--purple-soft);
+            border-radius: 3px;
+        }
+
+        @media(max-width:640px) {
+            .page {
+                padding: 20px 14px 60px;
+            }
+
+            .page-hero {
+                padding: 28px 20px;
+            }
+
+            .page-hero h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
 </head>
+
 <body>
+    <div id="sideOverlay"></div>
 
-    <!-- Main Content / Header -->
-    <div class="header">
-        <button class="menu-toggle" id="menuToggle">☰</button>
-        <a href="https://i.ibb.co/21KTgLmN/logo1.png" class="logo">
-        <img src="https://i.ibb.co/21KTgLmN/logo1.png" alt="Logo">
-      </a>
-        
-      </div>
+    <header class="header">
+        <button class="menu-toggle" id="menuToggle" aria-label="Open Menu"><i class='bx bx-menu'></i></button>
+        <a href="{% url 'myapp:index' %}" class="logo">
+            <img src="https://i.ibb.co/21KTgLmN/logo1.png" alt="Logo">
+            <div class="logo-text"><strong>Student Directory</strong><span>Academic Hub</span></div>
+        </a>
+        <nav class="header-nav">
+            <a href="{% url 'myapp:index' %}">Home</a>
+            <a href="{% url 'myapp:semester' %}">Semesters</a>
+            <a href="{% url 'myapp:about' %}">About</a>
+            <a href="{% url 'myapp:help' %}" class="active">Help</a>
+        </nav>
+        <div class="header-actions">
+            <button id="darkToggle">🌙</button>
+            <a href="{% url 'login' %}" class="login-btn"><i class='bx bxs-user'></i><span>Login</span></a>
+        </div>
+    </header>
 
- <!-- Button to open sidebar -->
-        
-      
- <!-- Sidebar -->
-    <nav id="sideMenu" class="side-menu">
-    <button class="close-btn" id="closeMenu">×</button>
-    <ul>
-      <li><a href="{% url 'myapp:index' %}">Home</a></li>
-      <li><a href="{% url 'myapp:semester' %}">Semester</a></li>
-      <li><a href="{% url 'myapp:help' %}">Help</a></li> 
-      <li><a href="{% url 'myapp:about' %}">About</a></li>
-      <li><a href="{% url 'myapp:contact' %}">Contact</a></li>
-      <li><a href="{% url 'login' %}">Login</a></li>
-    </ul>
+    <nav id="sideMenu">
+        <div class="sidebar-header">
+            <div class="sidebar-header-icon"><i class='bx bxs-graduation'></i></div>
+            <span class="sidebar-header-text">Student Directory</span>
+            <button class="close-btn" id="closeMenu">&times;</button>
+        </div>
+        <p class="sidebar-label">Navigation</p>
+        <a href="{% url 'myapp:index' %}"><i class='bx bxs-home'></i> Home</a>
+        <a href="{% url 'myapp:semester' %}"><i class='bx bx-calendar'></i> Semester</a>
+        <a href="{% url 'myapp:about' %}"><i class='bx bx-info-circle'></i> About</a>
+        <a href="{% url 'myapp:contact' %}"><i class='bx bx-envelope'></i> Contact</a>
+        <a href="{% url 'myapp:help' %}"><i class='bx bx-help-circle'></i> Help</a>
+        <a href="{% url 'login' %}"><i class='bx bxs-user'></i> Login</a>
     </nav>
 
+    <main class="page">
 
-
-    <section id="help">
-    <h2 class="help-title">Help & Support</h2>
-
-    <div class="help-container">
+        <div class="page-hero">
+            <div class="hero-badge"><i class='bx bx-help-circle'></i> Help Center</div>
+            <h1>Help &amp; Support 🙋</h1>
+            <p>Get quick answers, step-by-step guides, and troubleshooting tips to make the most of Student Directory.
+            </p>
+        </div>
 
         <!-- Quick Guide -->
-        <div class="help-box">
-            <h3>Quick Guide</h3>
-            <ul>
-                <li>Login to access your dashboard.</li>
-                <li>Use the sidebar to navigate between pages.</li>
-                <li>View Books, Notes, Assignments, and Attendance easily.</li>
-                <li>Update your profile from the settings menu.</li>
-            </ul>
+        <div class="panel">
+            <div class="sec-head">
+                <h2>Quick Start Guide</h2>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-text"><strong>Login to your account</strong><span>Visit the Login page and enter
+                            your credentials to access the dashboard.</span></div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-text"><strong>Select a Semester</strong><span>From the Home page, use the semester
+                            dropdown to choose your current semester.</span></div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-text"><strong>Pick a Category</strong><span>Choose Books, Notes, Assignments, or
+                            Attendance to browse resources.</span></div>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-text"><strong>Preview or Download</strong><span>Click any resource card to preview
+                            inline, or download the PDF directly.</span></div>
+                </div>
+                <div class="step">
+                    <div class="step-num">5</div>
+                    <div class="step-text"><strong>Track your Dashboard</strong><span>Go to Dashboard for attendance
+                            overview, subject progress, and recent activity.</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Categories -->
+        <div class="panel">
+            <div class="sec-head">
+                <h2>Help Topics</h2>
+            </div>
+            <div class="help-grid">
+                <div class="help-card">
+                    <div class="help-card-icon hi-purple"><i class='bx bx-user'></i></div>
+                    <h3>Account</h3>
+                    <ul>
+                        <li>Login with your college email</li>
+                        <li>Reset password via Forgot Password</li>
+                        <li>Logout from header button</li>
+                    </ul>
+                </div>
+                <div class="help-card">
+                    <div class="help-card-icon hi-teal"><i class='bx bx-book-open'></i></div>
+                    <h3>Resources</h3>
+                    <ul>
+                        <li>Select semester &amp; category</li>
+                        <li>Preview PDFs in-browser</li>
+                        <li>Download materials directly</li>
+                    </ul>
+                </div>
+                <div class="help-card">
+                    <div class="help-card-icon hi-amber"><i class='bx bx-check-circle'></i></div>
+                    <h3>Attendance</h3>
+                    <ul>
+                        <li>View heatmap on dashboard</li>
+                        <li>Teacher access for editing</li>
+                        <li>Read-only for students</li>
+                    </ul>
+                </div>
+                <div class="help-card">
+                    <div class="help-card-icon hi-blue"><i class='bx bx-wrench'></i></div>
+                    <h3>Troubleshooting</h3>
+                    <ul>
+                        <li>Hard refresh: Ctrl+Shift+R</li>
+                        <li>Enable JavaScript in browser</li>
+                        <li>Use Chrome/Edge for best results</li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <!-- FAQs -->
-        <div class="help-box">
-            <h3>Frequently Asked Questions</h3>
-            <ul>
-                <li><b>How do I reset my password?</b><br>Go to Login → Forgot Password.</li>
-                <li><b>Why is my page not loading?</b><br>Check your internet or refresh the page.</li>
-                <li><b>Where can I submit assignments?</b><br>Open the Assignments section.</li>
-            </ul>
-        </div>
-
-        <!-- Troubleshooting -->
-        <div class="help-box">
-            <h3>Troubleshooting</h3>
-            <ul>
-                <li>Refresh the webpage if data doesn't appear.</li>
-                <li>Clear browser cache for UI issues.</li>
-                <li>Ensure JavaScript is enabled.</li>
-                <li>Use Chrome or Edge for best performance.</li>
-            </ul>
-        </div>
-
-        <!-- Contact Support -->
-        <div class="help-box">
-            <h3>Contact Support</h3>
-            <p>If you face any issue, reach out:</p>
-            <p>Email: <b>support@example.com</b></p>
-            <p>LinkedIn: <b>YourProfile</b></p>
+        <div class="panel">
+            <div class="sec-head">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item open">
+                    <div class="faq-q">How do I reset my password? <i class='bx bx-chevron-down chevron'></i></div>
+                    <div class="faq-a">Go to the Login page and click "Forgot Password". Enter your registered email and
+                        follow the instructions sent to your inbox.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q">Why is my page not loading? <i class='bx bx-chevron-down chevron'></i></div>
+                    <div class="faq-a">Check your internet connection and refresh the page. If the issue persists, try
+                        pressing Ctrl+Shift+R to hard reload and clear cached files.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q">Where can I find assignments? <i class='bx bx-chevron-down chevron'></i></div>
+                    <div class="faq-a">Go to the Home page → select your semester → click the "Assignments" category
+                        button. All assignments for your semester will appear below.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q">Can I download notes and books? <i class='bx bx-chevron-down chevron'></i></div>
+                    <div class="faq-a">Yes! Click any resource card to open it. You'll see a preview and a download
+                        button to save the PDF to your device.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q">How do I change the theme (dark/light)? <i
+                            class='bx bx-chevron-down chevron'></i></div>
+                    <div class="faq-a">Click the 🌙 moon icon in the top-right of the header. The theme preference is
+                        saved automatically in your browser.</div>
+                </div>
+            </div>
         </div>
 
         <!-- Feedback -->
-        <div class="help-box">
-            <h3>Send Feedback</h3>
-            <p>Found a bug or want a new feature? Let us know!</p>
-            <button class="feedback-btn">Submit Feedback</button>
+        <div class="feedback-row">
+            <p>Found a bug or want a new feature? <strong>Let us know!</strong></p>
+            <a href="{% url 'myapp:contact' %}" class="feedback-btn">
+                <i class='bx bx-send'></i> Send Feedback
+            </a>
         </div>
 
-    </div>
-</section>
+    </main>
+
     <script src="{% static 'myapp/js/indexScript.js' %}"></script>
+    <script>
+        // FAQ accordion
+        document.querySelectorAll(".faq-q").forEach(q => {
+            q.addEventListener("click", () => {
+                const item = q.closest(".faq-item");
+                item.classList.toggle("open");
+            });
+        });
+    </script>
 </body>
+
 </html>

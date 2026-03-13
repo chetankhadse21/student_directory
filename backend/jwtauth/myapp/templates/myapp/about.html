@@ -4,206 +4,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'myapp/css/indexStyle.css' %}">
-    <link rel="stylesheet" href="{% static 'myapp/css/aboutStyle.css' %}">
-    <title>About</title>
+    <title>About Us — Student Directory</title>
+    <meta name="description" content="Learn about the Student Directory platform, our mission, vision, and the team behind it.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+        html{scroll-behavior:smooth;}
+        body{font-family:'Inter',system-ui,sans-serif;background:#f0eeff;color:#4b4669;min-height:100vh;-webkit-font-smoothing:antialiased;}
+        body::before{content:'';position:fixed;top:-150px;right:-100px;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(167,139,250,.17) 0%,transparent 70%);pointer-events:none;z-index:0;}
+        :root{--purple:#7c3aed;--purple-soft:#a78bfa;--purple-pale:#ede9fe;--pink:#e879a3;--teal:#14b8a6;--amber:#f59e0b;--blue:#3b82f6;--green:#10b981;--surface:#fff;--border:#e2dff5;--text-dark:#1e1045;--text:#4b4669;--text-muted:#9590b8;}
+        header,nav,main,section,.panel{position:relative;z-index:1;}
+        #sideOverlay{display:none;position:fixed;inset:0;z-index:1999;background:rgba(30,16,69,.35);backdrop-filter:blur(3px);}
+        #sideOverlay.active{display:block;}
+        .header{height:72px;position:sticky;top:0;z-index:3000;display:flex;align-items:center;padding:0 24px;gap:16px;background:rgba(255,255,255,.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);box-shadow:0 1px 0 var(--border),0 4px 20px rgba(100,80,200,.07);}
+        .menu-toggle{width:40px;height:40px;background:#f0eeff;border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;}
+        .menu-toggle:hover{background:var(--purple);border-color:var(--purple);color:#fff;box-shadow:0 4px 14px rgba(124,58,237,.4);}
+        .logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;}
+        .logo img{height:36px;width:auto;border-radius:8px;filter:drop-shadow(0 2px 8px rgba(124,58,237,.22));}
+        .logo-text strong{display:block;font-size:15px;font-weight:800;color:var(--text-dark);line-height:1.1;}
+        .logo-text span{font-size:10px;font-weight:500;color:var(--purple-soft);letter-spacing:.08em;text-transform:uppercase;}
+        .header-nav{flex:1;display:flex;justify-content:center;gap:4px;}
+        .header-nav a{padding:7px 14px;border-radius:50px;font-size:13.5px;font-weight:500;color:var(--text);text-decoration:none;transition:all .2s;}
+        .header-nav a:hover,.header-nav a.active{color:var(--purple);background:var(--purple-pale);font-weight:600;}
+        @media(max-width:640px){.header-nav{display:none;}}
+        .header-actions{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+        #darkToggle{width:38px;height:38px;background:#f0eeff;border:1px solid var(--border);border-radius:50%;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+        #darkToggle:hover{border-color:var(--purple-soft);transform:rotate(15deg);}
+        .login-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;background:linear-gradient(135deg,var(--purple) 0%,#9333ea 60%,var(--pink) 100%);border-radius:50px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;box-shadow:0 4px 14px rgba(124,58,237,.35);transition:all .2s;}
+        .login-btn:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(124,58,237,.5);}
+        #sideMenu{width:255px;height:100vh;position:fixed;top:0;left:0;z-index:2000;background:#fff;border-right:1px solid var(--border);box-shadow:4px 0 30px rgba(100,80,200,.10);transform:translateX(-265px);transition:transform .3s ease;display:flex;flex-direction:column;overflow-y:auto;}
+        #sideMenu.active{transform:translateX(0);}
+        .sidebar-header{background:linear-gradient(135deg,var(--purple),var(--pink));padding:20px;display:flex;align-items:center;gap:10px;flex-shrink:0;position:relative;}
+        .sidebar-header-icon{width:36px;height:36px;background:rgba(255,255,255,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;}
+        .sidebar-header-text{font-size:15px;font-weight:700;color:#fff;}
+        .close-btn{position:absolute;top:16px;right:16px;font-size:22px;cursor:pointer;color:rgba(255,255,255,.8);background:none;border:none;line-height:1;}
+        .close-btn:hover{color:#fff;}
+        .sidebar-label{padding:14px 20px 4px;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);}
+        #sideMenu a{display:flex;align-items:center;gap:11px;padding:11px 20px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;border-left:3px solid transparent;transition:all .2s;}
+        #sideMenu a i{font-size:18px;color:var(--text-muted);transition:color .2s;}
+        #sideMenu a:hover{color:var(--purple);background:var(--purple-pale);border-left-color:var(--purple);}
+        #sideMenu a:hover i{color:var(--purple);}
+        .page{max-width:900px;margin:0 auto;padding:36px 20px 80px;display:flex;flex-direction:column;gap:28px;}
+        .page-hero{background:linear-gradient(135deg,var(--purple) 0%,#9333ea 55%,var(--pink) 100%);border-radius:24px;padding:40px 36px;color:#fff;box-shadow:0 12px 40px rgba(124,58,237,.28);position:relative;overflow:hidden;}
+        .page-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.07);}
+        .hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);border-radius:50px;padding:4px 12px;font-size:11px;font-weight:600;margin-bottom:12px;}
+        .page-hero h1{font-size:28px;font-weight:800;line-height:1.25;margin-bottom:8px;position:relative;z-index:1;}
+        .page-hero p{font-size:14px;opacity:.82;line-height:1.6;max-width:500px;position:relative;z-index:1;}
+        .panel{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;box-shadow:0 2px 12px rgba(100,80,200,.07);}
+        .sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+        .sec-head h2{font-size:16px;font-weight:700;color:var(--text-dark);display:flex;align-items:center;gap:8px;}
+        .sec-head h2::before{content:'';display:inline-block;width:4px;height:18px;background:linear-gradient(to bottom,var(--purple),var(--pink));border-radius:2px;}
+
+        /* About sections */
+        .about-block{display:flex;flex-direction:column;gap:20px;}
+        .info-card{background:#f8f7ff;border:1px solid var(--border);border-radius:16px;padding:24px;display:flex;gap:16px;}
+        .info-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+        .ic-purple{background:var(--purple-pale);color:var(--purple);}
+        .ic-pink  {background:#fce7f3;color:var(--pink);}
+        .ic-teal  {background:#ccfbf1;color:var(--teal);}
+        .ic-amber {background:#fef3c7;color:var(--amber);}
+        .info-body h3{font-size:15px;font-weight:700;color:var(--text-dark);margin-bottom:8px;}
+        .info-body p,.info-body li{font-size:13.5px;color:var(--text);line-height:1.65;}
+        .info-body ul{padding-left:18px;display:flex;flex-direction:column;gap:5px;}
+
+        /* Mission pills */
+        .mission-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;}
+        .mission-pill{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;background:#f0eeff;border:1px solid var(--border);border-radius:50px;font-size:13px;color:var(--text-dark);}
+        .mission-pill i{color:var(--purple);font-size:16px;}
+
+        /* Tagline */
+        .tagline-box{background:linear-gradient(135deg,var(--purple-pale),#fce7f3);border:1px solid rgba(124,58,237,.18);border-radius:16px;padding:24px;text-align:center;}
+        .tagline-box p{font-size:18px;font-weight:700;color:var(--text-dark);font-style:italic;}
+
+        /* Team cards */
+        .team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
+        .team-card{background:#f8f7ff;border:1px solid var(--border);border-radius:16px;padding:20px 18px;display:flex;gap:14px;align-items:flex-start;transition:all .2s;}
+        .team-card:hover{border-color:var(--purple-soft);box-shadow:0 6px 20px rgba(100,80,200,.12);transform:translateY(-2px);}
+        .team-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--pink));display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;flex-shrink:0;}
+        .team-info strong{display:block;font-size:14px;font-weight:700;color:var(--text-dark);}
+        .team-info .team-role{font-size:12px;font-weight:600;color:var(--purple);margin-bottom:4px;display:block;}
+        .team-info p{font-size:12px;color:var(--text-muted);line-height:1.5;}
+        .dept-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding:16px 0 8px;}
+
+        ::-webkit-scrollbar{width:5px;} ::-webkit-scrollbar-track{background:#e8e5f8;} ::-webkit-scrollbar-thumb{background:var(--purple-soft);border-radius:3px;}
+        @media(max-width:640px){.page{padding:20px 14px 60px;} .page-hero{padding:28px 20px;} .page-hero h1{font-size:22px;} .info-card{flex-direction:column;} .info-icon{width:44px;height:44px;}}
+    </style>
 </head>
 <body>
+<div id="sideOverlay"></div>
 
-    <div class="header">
-        <button class="menu-toggle" id="menuToggle">☰</button>
-        <a href="https://i.ibb.co/21KTgLmN/logo1.png" class="logo">
+<header class="header">
+    <button class="menu-toggle" id="menuToggle" aria-label="Open Menu"><i class='bx bx-menu'></i></button>
+    <a href="{% url 'myapp:index' %}" class="logo">
         <img src="https://i.ibb.co/21KTgLmN/logo1.png" alt="Logo">
-      </a>
+        <div class="logo-text"><strong>Student Directory</strong><span>Academic Hub</span></div>
+    </a>
+    <nav class="header-nav">
+        <a href="{% url 'myapp:index' %}">Home</a>
+        <a href="{% url 'myapp:semester' %}">Semesters</a>
+        <a href="{% url 'myapp:about' %}" class="active">About</a>
+        <a href="{% url 'myapp:help' %}">Help</a>
+    </nav>
+    <div class="header-actions">
+        <button id="darkToggle">🌙</button>
+        <a href="{% url 'login' %}" class="login-btn"><i class='bx bxs-user'></i><span>Login</span></a>
+    </div>
+</header>
+
+<nav id="sideMenu">
+    <div class="sidebar-header">
+        <div class="sidebar-header-icon"><i class='bx bxs-graduation'></i></div>
+        <span class="sidebar-header-text">Student Directory</span>
+        <button class="close-btn" id="closeMenu">&times;</button>
+    </div>
+    <p class="sidebar-label">Navigation</p>
+    <a href="{% url 'myapp:index' %}"><i class='bx bxs-home'></i> Home</a>
+    <a href="{% url 'myapp:semester' %}"><i class='bx bx-calendar'></i> Semester</a>
+    <a href="{% url 'myapp:about' %}"><i class='bx bx-info-circle'></i> About</a>
+    <a href="{% url 'myapp:contact' %}"><i class='bx bx-envelope'></i> Contact</a>
+    <a href="{% url 'myapp:help' %}"><i class='bx bx-help-circle'></i> Help</a>
+    <a href="{% url 'login' %}"><i class='bx bxs-user'></i> Login</a>
+</nav>
+
+<main class="page">
+
+    <div class="page-hero">
+        <div class="hero-badge"><i class='bx bx-info-circle'></i> About Us</div>
+        <h1>One Platform. Every Resource. 🎓</h1>
+        <p>Built by students, for students — to make academic life simpler, faster, and more organized.</p>
     </div>
 
-     <!-- Button to open sidebar -->
-        
-      
-    <!-- Sidebar -->
-    <nav id="sideMenu" class="side-menu">
-    <button class="close-btn" id="closeMenu">×</button>
-    <ul>
-      <li><a href="{% url 'myapp:index' %}">Home</a></li>
-      <li><a href="{% url 'myapp:semester' %}">Semester</a></li>
-      <li><a href="{% url 'myapp:help' %}">Help</a></li> 
-      <li><a href="{% url 'myapp:about' %}">About</a></li>
-      <li><a href="{% url 'myapp:contact' %}">Contact</a></li>
-      <li><a href="{% url 'login' %}">Login</a></li>
-    </ul>
-  </nav>
-
-            
-    <hr>
- <!-- About Content -->
-<div class="about-container">
-
     <!-- Tagline -->
-    <section class="about-section">
-        <h2> Tagline</h2>
-        <p><b>“All Your Academic Needs. One Smart Platform.”</b></p>
-    </section>
+    <div class="tagline-box">
+        <p>"All Your Academic Needs. One Smart Platform."</p>
+    </div>
 
-    <hr>
+    <!-- About / Vision / Mission / Goal -->
+    <div class="panel">
+        <div class="sec-head"><h2>Our Story</h2></div>
+        <div class="about-block">
+            <div class="info-card">
+                <div class="info-icon ic-purple"><i class='bx bx-bulb'></i></div>
+                <div class="info-body">
+                    <h3>About Us</h3>
+                    <p>We built this platform with a simple purpose — to make every student's academic life easier, faster, and more organized. From assignments and notes to practical files and question papers, students often spend more time searching for materials than studying them. <strong>Our website solves this problem</strong> — bringing all resources together in one clean, easy-to-use portal.</p>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-icon ic-teal"><i class='bx bx-target-lock'></i></div>
+                <div class="info-body">
+                    <h3>Vision</h3>
+                    <p>To create a complete digital academic ecosystem where students can access study materials, progress data, and academic information effortlessly — helping them stay organized and grow with confidence.</p>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-icon ic-amber"><i class='bx bx-rocket'></i></div>
+                <div class="info-body">
+                    <h3>Goal</h3>
+                    <p>Build a platform that becomes a one-stop academic hub — where resources, attendance details, and subject info are always up-to-date, easy to find, and beautifully organized. We aim to empower students to stay informed, stay on track, and succeed.</p>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-icon ic-pink"><i class='bx bx-check-shield'></i></div>
+                <div class="info-body">
+                    <h3>Mission</h3>
+                    <div class="mission-list">
+                        <span class="mission-pill"><i class='bx bx-check'></i>Quick access to notes & papers</span>
+                        <span class="mission-pill"><i class='bx bx-check'></i>Live attendance tracking</span>
+                        <span class="mission-pill"><i class='bx bx-check'></i>Organized subject info</span>
+                        <span class="mission-pill"><i class='bx bx-check'></i>Personalized dashboard</span>
+                        <span class="mission-pill"><i class='bx bx-check'></i>Reduce confusion & save time</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!-- About Us -->
-    <section class="about-section">
-        <h2> About Us</h2>
+    <!-- Team -->
+    <div class="panel">
+        <div class="sec-head"><h2>Our Team</h2></div>
+        <p style="font-size:13.5px;color:var(--text-muted);margin-bottom:16px;">A passionate group of students building a smarter academic experience.</p>
 
-        <p>
-            We built this platform with a simple purpose — to make every student’s academic life easier,
-            faster, and more organized. From assignments and notes to practical files, unit-wise question
-            papers, and theory papers, students often spend more time searching for study materials than
-            actually studying them.
-        </p>
-
-        <p><b>Our website solves this problem.</b></p>
-
-        <p>
-            We bring all essential academic resources together in one clean, easy-to-use portal. Students
-            can access materials instantly, track live attendance, view subject & teacher allotment,
-            and manage their academic profile — all in one place.
-        </p>
-
-        <p>
-            Students should focus on learning, not searching endlessly. That’s why the platform is simple,
-            reliable, and always available.
-        </p>
-    </section>
-
-    <hr>
-
-    <!-- Vision -->
-    <section class="about-section">
-        <h2> Vision</h2>
-        <p>
-            To create a complete digital academic ecosystem where students can access study materials,
-            progress data, and academic information effortlessly — helping them stay organized and grow
-            with confidence.
-        </p>
-    </section>
-
-    <hr>
-
-    <!-- Mission -->
-    <section class="about-section">
-        <h2> Mission</h2>
-        <ul>
-            <li>Provide quick access to assignments, notes, and question papers.</li>
-            <li>Simplify academic management with live attendance tracking.</li>
-            <li>Organize subject and teacher information cleanly.</li>
-            <li>Offer a personalized dashboard for the student's academic journey.</li>
-            <li>Reduce confusion and save time.</li>
-        </ul>
-    </section>
-
-    <hr>
-
-    <!-- Goal -->
-    <section class="about-section">
-        <h2> Goal</h2>
-
-        <p>
-            Our goal is to build a platform that becomes a one-stop academic hub — where resources,
-            attendance details, and subject information are always up-to-date, easy to find,
-            and beautifully organized.
-        </p>
-
-        <p>
-            We aim to empower students by giving them everything they need to stay informed,
-            stay on track, and succeed in their academic journey.
-        </p>
-    </section>
-
-</div>
-
-
-<!-- TEAM SECTION -->
-<div class="team-container">
-
-    <h2> Our Team</h2>
-
-    <p>
-        We are a group of passionate students dedicated to creating a smoother and smarter academic
-        experience. Each member brings unique skills, creativity, and dedication to shape this platform.
-    </p>
-
-    <hr>
-
-    <!-- Founders -->
-    <section class="team-section">
-        <h3>🔹 Founders & Leadership</h3>
-
-        <div class="team-item">
-            <p><b>Founder — Chetan Khadse</b><br>
-                Leads development, system architecture, and platform direction.
-            </p>
+        <p class="dept-label">🔹 Founders &amp; Leadership</p>
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-avatar">C</div>
+                <div class="team-info">
+                    <strong>Chetan Khadse</strong>
+                    <span class="team-role">Founder &amp; Backend Lead</span>
+                    <p>Leads development, system architecture, and platform direction.</p>
+                </div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">S</div>
+                <div class="team-info">
+                    <strong>Sumit Shinde</strong>
+                    <span class="team-role">Co-Founder</span>
+                    <p>Handles coordination, operations, and project alignment.</p>
+                </div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">A</div>
+                <div class="team-info">
+                    <strong>Aniket Chaudhari</strong>
+                    <span class="team-role">CEO</span>
+                    <p>Manages growth, branding, communication &amp; long-term strategy.</p>
+                </div>
+            </div>
         </div>
 
-        <div class="team-item">
-            <p><b>Co-Founder — Sumit Shinde</b><br>
-                Handles coordination, operations, and project alignment.
-            </p>
+        <p class="dept-label">💻 Software Department</p>
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-avatar">C</div>
+                <div class="team-info">
+                    <strong>Chetan Khadse</strong>
+                    <span class="team-role">Team Lead · Backend Developer</span>
+                    <p>Builds backend systems, ensures speed, security &amp; scalability.</p>
+                </div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">D</div>
+                <div class="team-info">
+                    <strong>Dnyaneshwari Rode</strong>
+                    <span class="team-role">Frontend Developer</span>
+                    <p>Designs responsive UI, supports backend &amp; database, clean interfaces.</p>
+                </div>
+            </div>
         </div>
 
-        <div class="team-item">
-            <p><b>CEO — Aniket Chaudhari</b><br>
-                Manages growth, branding, communication, and long-term strategy.
-            </p>
+        <p class="dept-label">📋 Non-Technical Department</p>
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-avatar">S</div>
+                <div class="team-info">
+                    <strong>Sumit Shinde</strong>
+                    <span class="team-role">Management Lead</span>
+                    <p>Handles coordination, planning &amp; ensures smooth execution.</p>
+                </div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">A</div>
+                <div class="team-info">
+                    <strong>Aniket Chaudhari</strong>
+                    <span class="team-role">Marketing Lead</span>
+                    <p>Builds brand strategy &amp; promotes the platform in the student community.</p>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
 
-    <hr>
-
-    <!-- Technical Department -->
-    <section class="team-section">
-        <h3> Software Department</h3>
-
-        <div class="team-item">
-            <p><b>Chetan Khadse — Team Lead (Backend Developer)</b><br>
-                • Leads the technical team<br>
-                • Builds backend systems & server logic<br>
-                • Ensures speed, security, and scalability
-            </p>
-        </div>
-
-        <div class="team-item">
-            <p><b>Dnyaneshwari Rode — Frontend Developer (with Backend & DB Support)</b><br>
-                • Designs responsive UI<br>
-                • Supports backend & database<br>
-                • Ensures clean and user-friendly interfaces
-            </p>
-        </div>
-    </section>
-
-    <hr>
-
-    <!-- Non-Technical Department -->
-    <section class="team-section">
-        <h3> Non-Technical Department</h3>
-
-        <div class="team-item">
-            <p><b>Sumit Shinde — Management Lead</b><br>
-                • Handles coordination and planning<br>
-                • Manages operations<br>
-                • Ensures smooth execution
-            </p>
-        </div>
-
-        <div class="team-item">
-            <p><b>Aniket Chaudhari — Marketing Lead</b><br>
-                • Builds brand strategy<br>
-                • Manages communication channels<br>
-                • Promotes the platform in the student community
-            </p>
-        </div>
-    </section>
-
-</div>
-
-
+</main>
 
 <script src="{% static 'myapp/js/indexScript.js' %}"></script>
-
 </body>
 </html>
